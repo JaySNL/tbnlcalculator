@@ -1,54 +1,45 @@
-# Active Sprint: [Sprint Name/Focus]
+# Active Sprint: UI/UX Master Polish & Journey Refinement
 
-## 🎯 Current Pulse ([YYYY-MM-DD HH:mm] [Timezone])
+## 🎯 Current Pulse (2026-01-08 17:35 CET)
 
-**Status**: [Current Status Emoji] **[Status Title]** - [Brief description of current state and recent major sync/audit].
+**Status**: 🎨 **Optimization Phase** - Finished the core "Journey" refactor. Switched to unified `rounded-3xl` borders and conversational UX.
 
-**Health**: [Color Emoji] **[Health Status]** - [Description of system context, velocity, and blockers].
+**Health**: 🟢 **Excellent** - Velocity is high. The transition to Iframe integration has resolved all previous styling blockers.
 
 ---
 
-## 🔄 Strategic Refinements ([YYYY-MM-DD] [Timezone])
+## 🔄 Strategic Refinements
 
 ### User Feedback Integration
-- ❌ **REMOVED**: [Feature/Task removed and reasoning]
-- ⚠️ **SIMPLIFIED**: [Feature/Task simplified and constraints]
-- ✅ **ADDED**: [New feature/task based on feedback]
-- ✅ **CONFIRMED**: [Validated implementation or logic]
+- ❌ **REMOVED**: Shadow DOM integration (too unstable for HeroUI/Tailwind 4).
+- ⚠️ **SIMPLIFIED**: Removed complex gradient icon boxes for cleaner emojis.
+- ✅ **ADDED**: Usage Profile (Gebruiksprofiel) selector.
+- ✅ **ADDED**: Step-by-step indicators (1/4, 2/4).
+- ✅ **ADDED**: Theme toggle (Dark/Light).
+- ✅ **CONFIRMED**: Unified `rounded-3xl` border radius for premium feel.
 
 ### Strategic Clarity
-- **[Principle 1]**: [Definition/Constraint]
-- **[Principle 2]**: [Definition/Constraint]
-- **[Scaling/Growth]**: [Strategy for expansion]
+- **The Journey Priority**: Usability > Decorative Flair.
+- **Hybrid Visuals**: Keep inputs Light for scanability, results Dark for "Premium" impact.
 
 ---
 
 ## 📂 Artifacts Created
 
-### New Files
+### Key Files
 ```
-[path/to/file/1]
-[path/to/file/2]
+website/src/components/InputSection.jsx  (Refactored into 4 steps)
+website/src/components/Calculator.jsx    (Hybrid Theme implementation)
+dist/index.html                           (Standalone WP production file)
 ```
-
-### Analysis/Documentation Sections
-1. **[Section Name]** - [Brief description]
-2. **[Section Name]** - [Brief description]
 
 ---
 
 ## 🎯 Strategic Recommendations
 
-### Immediate Actions ([Current Quarter/Month])
-1. **[Action 1]** - [Goal]
-2. **[Action 2]** - [Goal]
-
-### Short-term ([Next Quarter/Month])
-3. **[Action 3]** - [Goal]
-4. **[Action 4]** - [Goal]
-
-### Medium-term ([Future Timeline])
-5. **[Action 5]** - [Goal]
+### Immediate Actions (Today)
+1. **Final Polish**: Verify mobile responsiveness of the 4-step layout.
+2. **Docs Sync**: Clean up duplicate root files.
 
 ---
 
@@ -56,30 +47,8 @@
 
 | Component | Status | Priority | Timeline |
 |-----------|--------|----------|----------|
-| [Task/Module] | [Status Emoji] [Status] | [P0-P3] | [Timeline] |
-| [Task/Module] | [Status Emoji] [Status] | [P0-P3] | [Timeline] |
-
----
-
-## ✅ Feature Verification Audit ([Version/Milestone])
-
-[use if applicable else delete/update]
-
-### 1. [Feature Name]
-- **Status**: [Status Emoji] **[Level]**
-- **Verified Files**: `[path/to/relevant/files]`
-- **Capabilities**: [List of verified functionalities].
-
-### 2. [Feature Name]
-- **Status**: [Status Emoji] **[Level]**
-- **Verified Files**: `[path/to/relevant/files]`
-- **Found Logic/Missing**: [Detailed breakdown of what exists vs what is needed].
-
----
-
-[use if applicable else delete/update]
-
-## 📅 Refined Release Plan ([Version])
-1. **[Step 1]** - [Description]
-2. **[Step 2]** - [Description]
-3. **[Step 3]** - [Description]
+| Core Logic | ✅ Complete | P0 | Done |
+| Hybrid UI | ✅ Complete | P0 | Done |
+| Iframe Integration | ✅ Verified | P0 | Done |
+| Mobile Optimization | 🔄 In Progress | P1 | Today |
+| PDF Export | ⏳ Backlog | P2 | Phase 2 |

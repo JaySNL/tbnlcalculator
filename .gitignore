@@ -51,3 +51,11 @@ wp-config-local.php
 
 # Snapshots (keep local only)
 .snapshots/
+.env
+
+
+
+# OpenMemory
+memory-service/
+openmemory-fix/
+openmemory-v123/

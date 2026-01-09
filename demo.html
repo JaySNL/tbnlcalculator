@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TBNL Mock WordPress Page</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f0f0f0;
+            margin: 0;
+        }
+
+        header {
+            background: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+        }
+
+        .wp-content {
+            margin-bottom: 2rem;
+        }
+
+        /* Iframe styling */
+        .calculator-embed {
+            width: 100%;
+            border: none;
+            min-height: 1400px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Thuisbatterij Nederland</h1>
+    </header>
+    <main>
+        <div class="wp-content">
+            <h2>Bereken je batterijcapaciteit</h2>
+            <p>Hieronder vind je onze geavanceerde tool. (Deze tekst is onderdeel van de WP pagina).</p>
+        </div>
+
+        <!-- IFRAME EMBED -->
+        <iframe src="./index.html" class="calculator-embed" title="TBNL Batterij Calculator"></iframe>
+
+    </main>
+</body>
+
+</html>

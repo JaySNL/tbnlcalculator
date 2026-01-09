@@ -1,112 +1,77 @@
-# [projectname] Architecture
+# TBNL Battery Calculator Architecture
 
-**Last Updated**: [date]
-
-This document is a living document, it should be updated as the architecture evolves.
-
-> **📋 Task Tracking**: All outstanding tasks are tracked in [`workflow-items/todo.md`](./todo.md).
+**Last Updated**: 2026-01-08
+**Status**: 🚀 Active Development
 
 ---
 
-## Documentation Index
+## 🏗️ System Overview
+A "Goldilocks" battery capacity calculator designed to be embedded into the `thuisbatterijnederland.nl` WordPress site. It balances user-friendly presets with advanced customizability, wrapped in a premium "SaaS-like" aesthetic.
 
-### Core Architecture
-- **[Project Structure](./architecture/01-project-structure.md)** - Directory layout and file organization
-- **[System Overview](./architecture/02-system-overview.md)** - High-level architecture and data flows
-- **[Frontend](./architecture/03-frontend.md)** - Client-side application and UI patterns
-- **[Backend](./architecture/04-backend.md)** - Server-side application and API patterns
-
-Add any additional sections as needed.
+### Core Philosophy
+- **Conversational UX**: Transforming the form into a "Journey" (Steps 1-4).
+- **Hybrid Visuals**: Light-mode inputs (max readability) combined with Dark-mode results (premium impact).
+- **Zero-Conflict Integration**: Using Iframes to ensure perfect style encapsulation in WordPress.
 
 ---
 
-## Quick Reference
+## 🛠️ Tech Stack
 
-### Tech Stack
-- **Frontend**: React 18 + TypeScript + Vite + TailwindCSS + ShadCN UI
-- **Backend**: Node.js + Express + Better-SQLite3
-- **Desktop**: Electron 28
-- **Routing**: HashRouter (for Electron `file://` protocol)
-- **State**: React Context API + License Context
-- **i18n**: react-i18next (Dutch + English)
+### Frontend
+- **Framework**: **Vite + React 18**.
+- **UI library**: **HeroUI (formerly NextUI)**.
+- **Styling**: **Tailwind CSS v4** + Custom Glassmorphism.
+- **Icons**: **Lucide React** + Emojis for "Journey" feel.
+- **Animations**: **Framer Motion** (via HeroUI) for smooth step transitions.
 
-### Key Features
-[if applicable list features]
+### Integration (WordPress)
+- **Method**: **Iframe Embedding**.
+- **Reasoning**: Abandoned Shadow DOM due to HeroUI/Tailwind v4 styling conflicts. Iframe provides a stable, isolated environment for complex Tailwind styles.
+- **Entry Point**: `index.html` (built from `calculator.html`).
 
-### Current Routes
+---
 
-[if applicable list routes]
+## 🎨 Design System
 
-### Directory Structure Example
+### Hybrid Theme
+- **Inputs Section**: **Light Theme**. 
+  - White background (`bg-white`).
+  - High contrast text (`text-slate-900`/`text-slate-700`).
+  - Card borders: `border-2 border-slate-200`.
+  - Border Radius: Unified `rounded-3xl` for all interactive elements.
+- **Results Section**: **Dark Theme / Glassmorphism**.
+  - Deep slate background (`bg-slate-950`).
+  - Frosted glass cards (`backdrop-blur-xl bg-white/5`).
+  - Gradient accents (Orange/Blue/Purple).
+
+---
+
+## 📂 Project Structure
 
 ```
-[project-root]/
-├── client/              # Frontend application
+tbnlcalculator/
+├── website/             # Main React Application
 │   ├── src/
-│   │   ├── pages/       # Route-level components
-│   │   ├── features/    # Modular domain logic (features/modules)
-│   │   ├── components/  # Shared reusable UI components
-│   │   ├── contexts/    # Global state management
-│   │   └── services/    # API client
-│   └── dist/            # Production build
-│
-├── server/              # Backend application
-│   ├── src/
-│   │   ├── routes/      # API endpoints
-│   │   ├── services/    # Business logic
-│   │   └── data/        # Database
-│   └── dist/            # Production build
-│
-├── electron/            # Electron wrapper + launcher
-│   └── src/
-│       └── services/    # Backend manager, window manager, license
-│
-└── scripts/             # Build and automation scripts
+│   │   ├── components/  # Calculator, InputSection, ResultsSection
+│   │   ├── utils/       # Calculation Logic (calculate.js)
+│   │   └── main.jsx     # Entry point (Standard React mount)
+│   ├── public/          # Static assets
+│   ├── calculator.html  # Standalone template for iframe
+│   └── vite.config.js   # Build config (Relative paths enabled)
+├── dist/                # Production build artifacts (Ready for WP)
+└── workflow-items/      # Project management & documentation
 ```
 
-If the project is not modular, the directory structure will be different. If the project is not a desktop application, the `electron` directory will be missing. If the project is not a backend application, the `server` directory will be missing. Update/choose accordingly.
+---
+
+## 🔐 Critical Requirements
+1. **Relative Paths**: Vite must use `base: './'` so assets load correctly in WordPress folders.
+2. **Standard Mount**: Mount to `#root` inside the iframe.
+3. **Responsive**: Layout must work within WordPress content column widths.
 
 ---
 
-## Critical Production Requirements
-
-[list critical production requirements]
-
----
-
-## Development Workflow
-
-[list development workflow]
-
-### Adding Dependencies
-
-[list dependency management if any] 
-
----
-
-## License System
-
-[list license system if any]
-
-### Dev Mode
-[list dev mode if any]
-
-### Production
-[list production if any]
-
-### Feature Gating
-[list feature gating if any]
-
----
-
-## Recent Critical Fixes
-
-[list recent critical fixes if any]
-
----
-
-## Contributing
-
-[list contributing if any]
-
----
+## 🔄 Data Flow
+1. **User Input** (Journey Steps 1-4) -> **Local State** (`formData`).
+2. **Calculation Engine** (`calculateBatteryConfig`) -> Reactive updates to **Results**.
+3. **CTA** -> Redirects parent window to contact page with URL parameters.

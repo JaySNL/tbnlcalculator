@@ -16,7 +16,8 @@ export default function Calculator() {
         orientation: 'south',
         hasHeatPump: false,
         hasAirco: false,
-        hasPool: false,
+        hasOther: false,
+        otherCapacity: 3,
         hasEV: false,
         evCapacity: 60,
         tariff: 'fixed'

@@ -36,8 +36,8 @@ export default function ResultsSection({ results, onGetAdvice, isDark = true }) 
 
     return (
         <Card className={`border-2 shadow-2xl transition-all duration-500 overflow-hidden rounded-3xl ${isDark
-                ? 'border-slate-900 bg-gradient-to-br from-slate-950 to-slate-900'
-                : 'border-slate-200 bg-white'
+            ? 'border-slate-900 bg-gradient-to-br from-slate-950 to-slate-900'
+            : 'border-slate-200 bg-white'
             }`}>
             <CardBody className="p-0">
 
@@ -97,6 +97,9 @@ export default function ResultsSection({ results, onGetAdvice, isDark = true }) 
                             value={`${results.stats.selfConsumption}%`}
                             isDark={isDark}
                         />
+                        <div className="col-span-2 text-[8px] text-center text-slate-400 font-medium">
+                            * Geschatte besparing o.b.v. simulatie. Geen garantie.
+                        </div>
                     </div>
 
                     <div className={`h-px w-full ${isDark ? 'bg-slate-800' : 'bg-slate-100'}`}></div>
@@ -245,8 +248,8 @@ export default function ResultsSection({ results, onGetAdvice, isDark = true }) 
 
 const SpecCard = ({ icon, label, value, unit, sublabel, color, isDark }) => (
     <div className={`rounded-[24px] p-5 border-2 relative overflow-hidden group transition-all duration-300 backdrop-blur-sm ${isDark
-            ? `bg-white/5 border-white/5 hover:border-${color}-500/50`
-            : `bg-slate-50 border-slate-100 hover:border-${color}-500/50 shadow-sm`
+        ? `bg-white/5 border-white/5 hover:border-${color}-500/50`
+        : `bg-slate-50 border-slate-100 hover:border-${color}-500/50 shadow-sm`
         }`}>
         <div className={`absolute -top-4 -right-4 w-16 h-16 bg-${color}-500/10 rounded-full blur-2xl group-hover:bg-${color}-500/20 transition-all`}></div>
         <div className="relative z-10">
@@ -285,8 +288,8 @@ const CheckItem = ({ text, isDark }) => (
 const GraphLegend = ({ color, label, dashed }) => (
     <div className="flex items-center gap-2">
         <div className={`w-3 h-0.5 rounded-full ${color === 'orange' ? 'bg-orange-500' :
-                color === 'blue' ? 'bg-blue-500' :
-                    'bg-slate-400 opacity-40'
+            color === 'blue' ? 'bg-blue-500' :
+                'bg-slate-400 opacity-40'
             } ${dashed ? 'border-t-2 border-dashed' : ''}`} />
         <span className="text-[8px] font-black text-slate-500 uppercase tracking-tighter">{label}</span>
     </div>

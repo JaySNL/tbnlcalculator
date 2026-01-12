@@ -209,7 +209,7 @@ export default function InputSection({ formData, setFormData }) {
                     {[
                         { key: 'hasHeatPump', emoji: '🔥', label: 'Warmtepomp' },
                         { key: 'hasAirco', emoji: '❄️', label: 'Airco' },
-                        { key: 'hasPool', emoji: '🏊', label: 'Zwembad' },
+                        { key: 'hasOther', emoji: '⚡', label: 'Overig' },
                         { key: 'hasEV', emoji: '🚗', label: 'EV Auto' }
                     ].map(({ key, emoji, label }) => (
                         <HeavyConsumerButton
@@ -221,6 +221,30 @@ export default function InputSection({ formData, setFormData }) {
                         />
                     ))}
                 </div>
+
+                {/* Overig Modal-like expansion */}
+                {formData.hasOther && (
+                    <div className="bg-slate-50 border-2 border-slate-200 rounded-3xl p-6 animate-in slide-in-from-top-4 duration-500">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-2 bg-white rounded-xl shadow-sm"><AlertCircle size={18} className="text-orange-500" /></div>
+                            <p className="text-sm font-bold text-slate-600">Specificeer piekvermogen (bijv. jacuzzi, inductie, sauna).</p>
+                        </div>
+                        <div className="grid grid-cols-3 gap-3">
+                            {[3, 5, 8].map(kw => (
+                                <button
+                                    key={kw}
+                                    onClick={() => handleChange('otherCapacity', kw)}
+                                    className={`py-3 rounded-xl font-black text-sm border-2 transition-all ${formData.otherCapacity === kw
+                                            ? 'bg-slate-900 border-slate-900 text-white'
+                                            : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300'
+                                        }`}
+                                >
+                                    +{kw} kW
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 {/* EV Modal-like expansion */}
                 {formData.hasEV && (
@@ -299,8 +323,8 @@ const ProfileButton = ({ isSelected, onClick, icon, label, consumption }) => (
     <button
         onClick={onClick}
         className={`h-32 rounded-3xl font-bold transition-all duration-500 flex flex-col items-center justify-center gap-2 border-2 ${isSelected
-                ? 'bg-gradient-to-br from-slate-900 to-slate-800 border-slate-900 text-white shadow-2xl scale-[1.02]'
-                : 'bg-white border-slate-100 text-slate-700 hover:border-orange-200 hover:bg-orange-50/30'
+            ? 'bg-gradient-to-br from-slate-900 to-slate-800 border-slate-900 text-white shadow-2xl scale-[1.02]'
+            : 'bg-white border-slate-100 text-slate-700 hover:border-orange-200 hover:bg-orange-50/30'
             }`}
     >
         <span className="text-4xl mb-1">{icon}</span>
@@ -315,8 +339,8 @@ const OrientationButton = ({ isSelected, onClick, icon, label }) => (
     <button
         onClick={onClick}
         className={`aspect-square sm:aspect-auto sm:h-20 rounded-2xl font-black transition-all duration-300 flex flex-col items-center justify-center gap-1 border-2 ${isSelected
-                ? 'bg-orange-500 border-orange-600 text-white shadow-lg shadow-orange-500/30 scale-105'
-                : 'bg-white border-slate-100 text-slate-500 hover:border-orange-200'
+            ? 'bg-orange-500 border-orange-600 text-white shadow-lg shadow-orange-500/30 scale-105'
+            : 'bg-white border-slate-100 text-slate-500 hover:border-orange-200'
             }`}
     >
         <span className="text-xl">{icon}</span>
@@ -328,8 +352,8 @@ const HeavyConsumerButton = ({ isSelected, onClick, emoji, label }) => (
     <button
         onClick={onClick}
         className={`h-24 rounded-3xl font-black transition-all duration-500 flex flex-col items-center justify-center gap-2 border-2 ${isSelected
-                ? 'bg-gradient-to-br from-orange-500 to-orange-600 border-orange-400 text-white shadow-xl scale-[1.02]'
-                : 'bg-white border-slate-100 text-slate-500 hover:border-orange-200 hover:bg-orange-50/20'
+            ? 'bg-gradient-to-br from-orange-500 to-orange-600 border-orange-400 text-white shadow-xl scale-[1.02]'
+            : 'bg-white border-slate-100 text-slate-500 hover:border-orange-200 hover:bg-orange-50/20'
             }`}
     >
         <span className="text-3xl">{emoji}</span>
@@ -341,8 +365,8 @@ const MiniToggleButton = ({ isSelected, onClick, label }) => (
     <button
         onClick={onClick}
         className={`px-6 py-3 rounded-2xl font-black text-xs transition-all border-2 ${isSelected
-                ? 'bg-slate-900 border-slate-900 text-white shadow-lg'
-                : 'bg-white border-slate-100 text-slate-400 hover:border-slate-200'
+            ? 'bg-slate-900 border-slate-900 text-white shadow-lg'
+            : 'bg-white border-slate-100 text-slate-400 hover:border-slate-200'
             }`}
     >
         {label}
@@ -353,8 +377,8 @@ const ContractButton = ({ isSelected, onClick, icon, title, desc }) => (
     <button
         onClick={onClick}
         className={`p-6 rounded-3xl text-left border-2 transition-all duration-500 flex gap-4 items-center ${isSelected
-                ? 'bg-white border-orange-500 shadow-xl scale-[1.02]'
-                : 'bg-slate-50 border-slate-100 text-slate-500 hover:border-orange-200'
+            ? 'bg-white border-orange-500 shadow-xl scale-[1.02]'
+            : 'bg-slate-50 border-slate-100 text-slate-500 hover:border-orange-200'
             }`}
     >
         <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${isSelected ? 'bg-orange-500 text-white shadow-lg' : 'bg-white shadow-sm text-slate-400'}`}>

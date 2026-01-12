@@ -43,7 +43,7 @@ export function calculateBatteryConfig(formData) {
     // Fixed/Variable: Total kWp * 2
     // Dynamic: Total kWp * 2.5
     const totalKWp = totalWp; // totalWp is already in kW (line 21: (solarPanels * solarWp) / 1000)
-    
+
     let recommendedCapacity = 0;
 
     if (formData.tariff === 'dynamic') {
@@ -127,8 +127,15 @@ export function calculateBatteryConfig(formData) {
     const selfConsumption = (totalSolarUsed / avgDailyGen) * 100;
 
     // Financials
-    const avgEnergyPrice = 0.35; // €/kWh
-    const annualSavings = (totalSolarUsed * 365) * avgEnergyPrice;
+    // Prices based on Zonneplan model (CBS Avg vs Dynamic Profiles)
+    // Fixed/Variable (Inactive User): €0.28/kWh
+    // Dynamic (Smartest User with Battery): €0.21/kWh
+    const energyPrice = formData.tariff === 'dynamic' ? 0.21 : 0.28;
+
+    // Savings = Amount of grid energy avoided * Price per kWh avoided
+    // For Dynamic users, the avoided cost is lower because they would have paid less anyway,
+    // but their total energy bill is lower overall. This metric strictly shows "Simulated Avoided Purchase Costs".
+    const annualSavings = (totalSolarUsed * 365) * energyPrice;
 
     return {
         recommendedCapacity: Number(recommendedCapacity.toFixed(1)),

@@ -57,85 +57,151 @@ export function calculateBatteryConfig(formData) {
     recommendedCapacity = Math.max(2.5, Math.min(25, recommendedCapacity));
 
     // Inverter Sizing
-    // 3-phase allows higher discharge
-    let inverterSize = Math.max(totalWp * 0.7, recommendedCapacity / 2.5);
-    inverterSize = gridPhase === '1' ? Math.min(5, inverterSize) : Math.min(15, inverterSize);
-    inverterSize = Math.round(inverterSize * 2) / 2; // Step of 0.5kW
+    // Formula: Max(PV Capacity, Peak Consumer Power)
+    // Minimum sizes: Heatpump -> 5kW.
+    // EV 3-phase -> 11kW, 1-phase -> 3.7kW (approx 4-5kW inverter)
+    // Overig -> 3, 5, or 8kW.
 
-    // 4. 24-Hour Simulation Model
-    // This correctly calculates Autarkie and Zelfconsumptie
-    let totalSolarUsedDirectly = 0;
-    let totalSolarStored = 0;
-    let totalSolarWasted = 0;
-    let batteryCharge = 0;
+    // 1. Calculate Peak Load Requirement
+    let peakLoad = 3; // Base household peak
+    if (hasHeatPump) peakLoad = Math.max(peakLoad, 5);
+    if (formData.hasOther) peakLoad = Math.max(peakLoad, formData.otherCapacity || 3);
+    if (hasEV) {
+        // If 3-phase, EV can pull 11kW. Inverter needs to support this if off-grid/hybrid, 
+        // but typically for grid-tied we just match the max draw we want to support from battery+solar?
+        // User request: "make sure the EV charger can use full power from inverter".
+        const evPeak = gridPhase === '3' ? 11 : 5;
+        peakLoad = Math.max(peakLoad, evPeak);
+    }
 
-    const flowPoints = Array.from({ length: 24 }, (_, h) => {
-        // A: Solar Production (Bell Curve)
-        // Peak at 13:00
-        const solarFactor = h > 6 && h < 20 ? Math.sin((h - 6) / 13 * Math.PI) : 0;
-        const hourlyGen = (avgDailyGen / 6.5) * solarFactor; // Area under sine is about 6.5h of peak
+    // 2. Initial Inverter Size based on PV
+    // Typically Inverter is 80-100% of PV kWp, but sometimes smaller is allowed (clipping).
+    // Here we ensure it covers the PV OR the Peak Load.
+    let inverterSize = Math.max(totalWp, peakLoad);
 
-        // B: Demand (M-Curve: Peaks at 8:00 and 19:00)
-        let hourlyDemand = (Math.exp(-Math.pow(h - 8, 2) / 6) + Math.exp(-Math.pow(h - 19, 2) / 8) + 0.3) * (avgDailyDemand / 12);
+    // 3. Phase Constraints
+    if (gridPhase === '1') {
+        inverterSize = Math.min(5, inverterSize);
+    } else {
+        inverterSize = Math.min(20, inverterSize); // Cap at 20kW for residential
+    }
 
-        // Add heavy loads
-        if (hasHeatPump && (h < 8 || h > 18)) hourlyDemand += (2000 / 8760) * 24; // Heat pump runs more at night
-        if (hasEV && h > 21) hourlyDemand += (evCapacity / 10); // Charging at night (simple model)
+    // Round to nearest 0.5
+    inverterSize = Math.ceil(inverterSize * 2) / 2;
 
-        // C: Energy Routing
-        const directUsage = Math.min(hourlyGen, hourlyDemand);
-        let surplus = hourlyGen - directUsage;
-        let deficit = hourlyDemand - directUsage;
+    // 4. Seasonal Simulation Model (Monthly)
+    // This allows for realistic 'Winter Dip' and 'Summer Surplus' logic
 
-        // Battery Logic
-        let batteryAction = 0;
-        if (surplus > 0) {
-            const chargable = Math.min(surplus, recommendedCapacity - batteryCharge, inverterSize);
-            batteryCharge += chargable;
-            surplus -= chargable;
-            batteryAction = chargable;
-            totalSolarStored += chargable;
-        } else if (deficit > 0) {
-            const discharge = Math.min(deficit, batteryCharge, inverterSize);
-            batteryCharge -= discharge;
-            deficit -= discharge;
-            batteryAction = -discharge;
+    const MONTH_WEIGHTS = [
+        { name: 'Jan', sol: 0.03, dem: 1.15 },
+        { name: 'Feb', sol: 0.05, dem: 1.10 },
+        { name: 'Mar', sol: 0.10, dem: 1.05 },
+        { name: 'Apr', sol: 0.14, dem: 0.95 },
+        { name: 'May', sol: 0.16, dem: 0.90 },
+        { name: 'Jun', sol: 0.17, dem: 0.85 },
+        { name: 'Jul', sol: 0.16, dem: 0.85 },
+        { name: 'Aug', sol: 0.14, dem: 0.85 },
+        { name: 'Sep', sol: 0.11, dem: 0.90 },
+        { name: 'Oct', sol: 0.08, dem: 1.00 },
+        { name: 'Nov', sol: 0.04, dem: 1.10 },
+        { name: 'Dec', sol: 0.02, dem: 1.20 }
+    ];
+
+    let annualSolarDirect = 0;
+    let annualBatteryYield = 0;
+
+    let flowPoints = []; // We will store June (Peak) data for the graph
+
+    MONTH_WEIGHTS.forEach((m, idx) => {
+        const daysInMonth = 30.5;
+        const dailyGen = (annualGeneration * m.sol) / daysInMonth;
+        const dailyDemand = (annualDemand * m.dem) / 365;
+
+        // Run 24h simulation for this "Typical Month Day"
+        let monthSolarDirect = 0;
+        let monthBatteryYield = 0;
+        let monthBatteryCharge = 0; // Reset battery state daily for avg model (simplified)
+
+        // Simulation arrays for graph (only saving June)
+        const isGraphMonth = idx === 5; // June
+        const dailyPoints = [];
+
+        for (let h = 0; h < 24; h++) {
+            // A. Solar Curve (Bell)
+            const sunHour = h > 5 && h < 21;
+            const solarFactor = sunHour ? Math.sin((h - 5) / 16 * Math.PI) : 0;
+            const hourlyGen = (dailyGen / 8) * solarFactor; // Approx distribution
+
+            // B. Demand Curve (Morning/Evening Peaks)
+            let hourlyDemand = (Math.exp(-Math.pow(h - 8, 2) / 6) + Math.exp(-Math.pow(h - 19, 2) / 8) + 0.3) * (dailyDemand / 12);
+
+            // Add Appliance Load Profiles
+            if (hasHeatPump) {
+                const winterFactor = m.dem > 1.0 ? 1.5 : 0.2;
+                if (h < 9 || h > 17) hourlyDemand += (2.5 * winterFactor);
+            }
+            if (hasEV && h > 18) {
+                hourlyDemand += (evCapacity / 6);
+            }
+            if (formData.hasOther && (h === 18 || h === 19)) {
+                hourlyDemand += (formData.otherCapacity || 3) * 0.5;
+            }
+
+            // C. Energy Routing
+            const directUsage = Math.min(hourlyGen, hourlyDemand);
+            let surplus = hourlyGen - directUsage;
+            let deficit = hourlyDemand - directUsage;
+
+            // Battery logic
+            let batteryAction = 0;
+            if (surplus > 0) {
+                const canCharge = Math.min(surplus, recommendedCapacity - monthBatteryCharge, inverterSize);
+                monthBatteryCharge += canCharge;
+                surplus -= canCharge;
+                batteryAction = canCharge;
+            } else if (deficit > 0) {
+                const canDischarge = Math.min(deficit, monthBatteryCharge, inverterSize);
+                monthBatteryCharge -= canDischarge;
+                monthBatteryYield += canDischarge;
+                deficit -= canDischarge;
+                batteryAction = -canDischarge;
+            }
+
+            monthSolarDirect += directUsage;
+
+            if (isGraphMonth) {
+                dailyPoints.push({
+                    hour: h,
+                    solar: Number(hourlyGen.toFixed(2)),
+                    consumption: Number(hourlyDemand.toFixed(2)),
+                    batteryLevel: Number(((monthBatteryCharge / recommendedCapacity) * 100).toFixed(0)),
+                    batteryAction: Number(batteryAction.toFixed(2))
+                });
+            }
         }
 
-        totalSolarUsedDirectly += directUsage;
-        totalSolarWasted += surplus; // Export to grid
+        if (isGraphMonth) flowPoints = dailyPoints;
 
-        return {
-            hour: h,
-            solar: Number(hourlyGen.toFixed(2)),
-            consumption: Number(hourlyDemand.toFixed(2)),
-            batteryLevel: Number(((batteryCharge / recommendedCapacity) * 100).toFixed(0)),
-            batteryAction: Number(batteryAction.toFixed(2))
-        };
+        // Accumulate Annual Data
+        annualSolarDirect += (monthSolarDirect * daysInMonth);
+        annualBatteryYield += (monthBatteryYield * daysInMonth);
     });
 
     // D: Summary Metrics
-    const totalSolarUsed = totalSolarUsedDirectly + totalSolarStored;
+    const totalSolarUsed = annualSolarDirect + annualBatteryYield;
 
-    // Autarkie (Self-Sufficiency): How much of your LOAD is covered by solar
-    // Adding an EV increases annualDemand -> This lowers Autarkie % unless battery is huge
-    const autarkie = (totalSolarUsed / (avgDailyDemand)) * 100;
-    const currentAutarkie = (totalSolarUsedDirectly / avgDailyDemand) * 100;
+    // Autarkie
+    const autarkie = (totalSolarUsed / annualDemand) * 100;
+    const currentAutarkie = (annualSolarDirect / annualDemand) * 100;
 
-    // Zelfconsumptie: How much of your SOLAR is used by you
-    // Adding an EV increases this % because you waste less surplus
-    const selfConsumption = (totalSolarUsed / avgDailyGen) * 100;
+    // Zelfconsumptie
+    const selfConsumption = (totalSolarUsed / annualGeneration) * 100;
 
     // Financials
-    // Prices based on Zonneplan model (CBS Avg vs Dynamic Profiles)
-    // Fixed/Variable (Inactive User): €0.28/kWh
-    // Dynamic (Smartest User with Battery): €0.21/kWh
     const energyPrice = formData.tariff === 'dynamic' ? 0.21 : 0.28;
 
-    // Savings = Amount of grid energy avoided * Price per kWh avoided
-    // For Dynamic users, the avoided cost is lower because they would have paid less anyway,
-    // but their total energy bill is lower overall. This metric strictly shows "Simulated Avoided Purchase Costs".
-    const annualSavings = (totalSolarUsed * 365) * energyPrice;
+    // Savings Logic
+    const annualSavings = totalSolarUsed * energyPrice;
 
     return {
         recommendedCapacity: Number(recommendedCapacity.toFixed(1)),
@@ -143,8 +209,8 @@ export function calculateBatteryConfig(formData) {
         estimatedGenerationKwh: Math.round(annualGeneration),
         annualSavings: Math.round(annualSavings),
         stats: {
-            current: Math.min(35, Math.round(currentAutarkie)),
-            projected: Math.min(95, Math.round(autarkie)),
+            current: Math.min(100, Math.round(currentAutarkie)),
+            projected: Math.min(99, Math.round(autarkie)),
             selfConsumption: Math.min(100, Math.round(selfConsumption))
         },
         flowPoints

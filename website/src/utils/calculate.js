@@ -39,15 +39,19 @@ export function calculateBatteryConfig(formData) {
     const avgDailyGen = annualGeneration / 365;
 
     // 3. Battery Sizing (The "Sweet Spot")
-    // Target: Cover 1.2x of the average night load
-    // Night load is typically 45-55% of total demand
-    let recommendedCapacity = (avgDailyDemand * 0.5) * 1.2;
+    // Target: Based on Total PV Capacity (kWp)
+    // Fixed/Variable: Total kWp * 2
+    // Dynamic: Total kWp * 2.5
+    const totalKWp = totalWp; // totalWp is already in kW (line 21: (solarPanels * solarWp) / 1000)
+    
+    let recommendedCapacity = 0;
 
-    // Buffers for heavy consumers
-    // These increase the NEEDED capacity
-    if (hasHeatPump) recommendedCapacity += 1.5; // Winter night buffer
-    if (hasEV) recommendedCapacity += (evCapacity * 0.2); // Charging buffer
-    if (hasAirco) recommendedCapacity += 0.5;
+    if (formData.tariff === 'dynamic') {
+        recommendedCapacity = totalKWp * 2.5;
+    } else {
+        // Default to fixed/variable model
+        recommendedCapacity = totalKWp * 2.0;
+    }
 
     // Physical bounds (Standard Home sizes)
     recommendedCapacity = Math.max(2.5, Math.min(25, recommendedCapacity));

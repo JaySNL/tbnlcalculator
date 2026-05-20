@@ -34,15 +34,41 @@ export function getSolarHourlyFraction(hour: number): number {
   return Math.sin(((hour - 5) / 16) * Math.PI);
 }
 
+// Realistic NL household demand curve based on NEDU standard load profiles
+// Key characteristics: low overnight, morning bump, low midday (people at work),
+// sharp evening ramp 17-21, biggest peak at 18-19 (cooking/arriving home)
+// Realistic NL "werkend" household demand curve
+// Based on NEDU E1A standard profile (working household, away during day)
+// Key: very low 9-16 (at work), sharp evening ramp, big peak 18-20
+const DEMAND_HOURLY_WEIGHTS = [
+  0.022, // 00:00 - standby, fridge, router
+  0.020, // 01:00
+  0.018, // 02:00
+  0.018, // 03:00
+  0.018, // 04:00
+  0.020, // 05:00
+  0.025, // 06:00 - waking up
+  0.055, // 07:00 - morning routine, shower, breakfast
+  0.045, // 08:00 - leaving for work
+  0.015, // 09:00 - nobody home, standby only
+  0.012, // 10:00
+  0.012, // 11:00
+  0.013, // 12:00
+  0.012, // 13:00
+  0.012, // 14:00
+  0.015, // 15:00
+  0.030, // 16:00 - kids/first arrivals home
+  0.065, // 17:00 - cooking starts, oven, lights on
+  0.095, // 18:00 - PEAK: cooking, oven, TV, all lights
+  0.090, // 19:00 - dinner, dishwasher, TV
+  0.080, // 20:00 - laundry, TV, devices
+  0.065, // 21:00 - winding down
+  0.045, // 22:00 - late evening
+  0.030, // 23:00 - going to bed
+] as const;
+
 export function getDemandHourlyFraction(hour: number): number {
-  const baseLoad = 0.025;
-  const morningPeak = hour >= 7 && hour <= 9 ? 0.04 : 0;
-  const eveningPeak =
-    hour >= 17 && hour <= 21
-      ? 0.06 * Math.sin(((hour - 17) / 4) * Math.PI)
-      : 0;
-  const daytime = hour >= 8 && hour <= 22 ? 0.015 : 0;
-  return baseLoad + morningPeak + eveningPeak + daytime;
+  return DEMAND_HOURLY_WEIGHTS[hour] ?? 0.025;
 }
 
 export const HOUSEHOLD_PROFILES: Record<HouseholdProfileKey, number> = {

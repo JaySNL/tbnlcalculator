@@ -40,21 +40,26 @@ export function Calculator() {
   }, [formData]);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:py-12">
-      <header className="mb-10 flex items-start justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            {t("title")}
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
+    <div className="mx-auto max-w-[720px] px-5 pb-24 pt-12 sm:px-6 lg:pt-16">
+      <header className="mb-14">
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-semibold tracking-tighter sm:text-4xl">
+              {t("title")}
+            </h1>
+            <p className="mt-2 max-w-[50ch] text-[15px] leading-relaxed text-muted-foreground">
+              {t("subtitle")}
+            </p>
+          </div>
+          <LanguageSwitcher />
         </div>
-        <LanguageSwitcher />
+        <div className="mt-6 h-px bg-border" />
       </header>
 
       <InputSection formData={formData} onFormDataChange={setFormData} />
 
       {results && (
-        <div className="mt-14 space-y-14">
+        <div className="mt-20 space-y-20">
           <ResultsSection
             results={results}
             financialConfig={formData.financial}

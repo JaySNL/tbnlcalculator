@@ -25,24 +25,24 @@ interface InputSectionProps {
 }
 
 function Section({
-  step,
+  label,
   title,
   subtitle,
   children,
 }: {
-  step: number;
+  label: string;
   title: string;
   subtitle: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className="space-y-4">
-      <div>
-        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          {step}/4
+    <section>
+      <div className="mb-5">
+        <span className="text-[11px] font-medium tracking-widest text-brand uppercase">
+          {label}
         </span>
-        <h2 className="mt-1 text-lg font-semibold">{title}</h2>
-        <p className="text-sm text-muted-foreground">{subtitle}</p>
+        <h2 className="mt-1 text-xl font-semibold tracking-tight">{title}</h2>
+        <p className="mt-0.5 text-sm text-muted-foreground">{subtitle}</p>
       </div>
       {children}
     </section>
@@ -56,8 +56,8 @@ export function InputSection({ formData, onFormDataChange }: InputSectionProps) 
   const tFinancial = useTranslations("calculator.financial");
 
   return (
-    <div className="space-y-10">
-      <Section step={1} title={tProfile("title")} subtitle={tProfile("subtitle")}>
+    <div className="space-y-14">
+      <Section label="01" title={tProfile("title")} subtitle={tProfile("subtitle")}>
         <ProfileSelector
           value={{ profile: formData.profile, consumption: formData.consumption }}
           onChange={({ profile, consumption }) =>
@@ -66,14 +66,14 @@ export function InputSection({ formData, onFormDataChange }: InputSectionProps) 
         />
       </Section>
 
-      <Section step={2} title={tSolar("title")} subtitle={tSolar("subtitle")}>
+      <Section label="02" title={tSolar("title")} subtitle={tSolar("subtitle")}>
         <SolarConfig
           value={formData.solar}
           onChange={(solar) => onFormDataChange({ ...formData, solar })}
         />
       </Section>
 
-      <Section step={3} title={tBattery("title")} subtitle={tBattery("subtitle")}>
+      <Section label="03" title={tBattery("title")} subtitle={tBattery("subtitle")}>
         <BatterySelector
           value={formData.batterySizes}
           onChange={(batterySizes) =>
@@ -82,7 +82,7 @@ export function InputSection({ formData, onFormDataChange }: InputSectionProps) 
         />
       </Section>
 
-      <Section step={4} title={tFinancial("title")} subtitle={tFinancial("subtitle")}>
+      <Section label="04" title={tFinancial("title")} subtitle={tFinancial("subtitle")}>
         <FinancialConfig
           value={formData.financial}
           onChange={(financial) =>

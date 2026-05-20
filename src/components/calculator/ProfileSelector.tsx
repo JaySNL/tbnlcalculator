@@ -40,8 +40,8 @@ export function ProfileSelector({ value, onChange }: ProfileSelectorProps) {
   }
 
   return (
-    <div className="space-y-5">
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         {PROFILE_KEYS.map((key) => {
           const isSelected = value.profile === key;
           return (
@@ -50,20 +50,19 @@ export function ProfileSelector({ value, onChange }: ProfileSelectorProps) {
               type="button"
               onClick={() => selectProfile(key)}
               className={cn(
-                "flex flex-col gap-1 rounded-lg border px-4 py-3 text-left transition-colors",
+                "relative flex flex-col gap-0.5 rounded-md px-4 py-3 text-left transition-all duration-200",
+                "active:scale-[0.98]",
                 isSelected
-                  ? "border-foreground bg-foreground text-background"
-                  : "border-border hover:border-foreground/40",
+                  ? "bg-foreground text-background shadow-sm"
+                  : "bg-muted hover:bg-muted/80 hover:shadow-sm",
               )}
             >
-              <span className="text-sm font-medium">{t(key)}</span>
+              <span className="text-[13px] font-medium">{t(key)}</span>
               {key !== "custom" && (
                 <span
                   className={cn(
-                    "text-xs",
-                    isSelected
-                      ? "text-background/70"
-                      : "text-muted-foreground",
+                    "font-mono text-xs",
+                    isSelected ? "text-background/60" : "text-muted-foreground",
                   )}
                 >
                   {HOUSEHOLD_PROFILES[key].toLocaleString()} kWh
@@ -74,44 +73,34 @@ export function ProfileSelector({ value, onChange }: ProfileSelectorProps) {
         })}
       </div>
 
-      {value.profile === "custom" ? (
-        <div className="space-y-3 rounded-lg border border-border p-4">
-          <div className="flex items-baseline justify-between">
-            <span className="text-sm text-muted-foreground">
-              {t("consumption")}
-            </span>
-            <span className="text-2xl font-semibold tabular-nums">
-              {value.consumption.toLocaleString()}
-              <span className="ml-1 text-sm font-normal text-muted-foreground">
-                kWh
-              </span>
-            </span>
-          </div>
-          <Slider
-            min={500}
-            max={15000}
-            step={50}
-            value={[value.consumption]}
-            onValueChange={setConsumption}
-          />
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>500</span>
-            <span>15.000 kWh</span>
-          </div>
-        </div>
-      ) : (
-        <div className="flex items-baseline justify-between rounded-lg border border-border px-4 py-3">
-          <span className="text-sm text-muted-foreground">
-            {t("estimated")}
+      <div className="rounded-md bg-muted px-5 py-4">
+        <div className="flex items-baseline justify-between">
+          <span className="text-[13px] text-muted-foreground">
+            {value.profile === "custom" ? t("consumption") : t("estimated")}
           </span>
-          <span className="text-2xl font-semibold tabular-nums">
+          <span className="font-mono text-2xl font-medium tracking-tight">
             {value.consumption.toLocaleString()}
-            <span className="ml-1 text-sm font-normal text-muted-foreground">
+            <span className="ml-1.5 text-sm font-normal text-muted-foreground">
               kWh
             </span>
           </span>
         </div>
-      )}
+        {value.profile === "custom" && (
+          <div className="mt-4 space-y-2">
+            <Slider
+              min={500}
+              max={15000}
+              step={50}
+              value={[value.consumption]}
+              onValueChange={setConsumption}
+            />
+            <div className="flex justify-between font-mono text-[11px] text-muted-foreground">
+              <span>500</span>
+              <span>15.000</span>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

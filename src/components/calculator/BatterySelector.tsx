@@ -52,20 +52,20 @@ export function BatterySelector({ value, onChange }: BatterySelectorProps) {
               disabled={disabled}
               onClick={() => toggleSize(size)}
               className={cn(
-                "flex flex-col items-center gap-0.5 rounded-lg border py-3 transition-colors",
-                disabled && "cursor-not-allowed opacity-30",
+                "relative flex flex-col items-center gap-0.5 rounded-md py-3.5 transition-all duration-200 active:scale-[0.98]",
+                disabled && "cursor-not-allowed opacity-25",
                 isSelected
-                  ? "border-foreground bg-foreground text-background"
-                  : "border-border hover:border-foreground/40",
+                  ? "bg-foreground text-background shadow-sm"
+                  : "bg-muted hover:bg-muted/80",
               )}
             >
-              <span className="text-lg font-semibold tabular-nums">
+              <span className="font-mono text-lg font-medium tabular-nums">
                 {size}
               </span>
               <span
                 className={cn(
-                  "text-xs",
-                  isSelected ? "text-background/60" : "text-muted-foreground",
+                  "text-[11px]",
+                  isSelected ? "text-background/50" : "text-muted-foreground",
                 )}
               >
                 kWh
@@ -93,13 +93,13 @@ export function BatterySelector({ value, onChange }: BatterySelectorProps) {
             .map((size) => (
               <span
                 key={size}
-                className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-sm"
+                className="inline-flex items-center gap-1.5 rounded-md bg-muted px-3 py-1.5 font-mono text-sm"
               >
                 {size} kWh
                 <button
                   type="button"
                   onClick={() => toggleSize(size)}
-                  className="text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
                   aria-label={`Remove ${size} kWh`}
                 >
                   &times;
@@ -117,8 +117,8 @@ export function BatterySelector({ value, onChange }: BatterySelectorProps) {
             onClick={() => setShowCustom(true)}
             disabled={atMax}
             className={cn(
-              "rounded-lg border border-dashed border-border px-3 py-2 text-sm text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground",
-              atMax && "cursor-not-allowed opacity-30",
+              "text-[13px] text-muted-foreground transition-colors hover:text-foreground",
+              atMax && "cursor-not-allowed opacity-25",
             )}
           >
             + {t("customSize")}
@@ -134,28 +134,25 @@ export function BatterySelector({ value, onChange }: BatterySelectorProps) {
               onChange={(e) => setCustomInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && addCustomSize()}
               placeholder="kWh"
-              className="w-24"
+              className="w-24 font-mono"
               autoFocus
             />
-            <Button variant="default" size="sm" onClick={addCustomSize}>
+            <Button size="sm" onClick={addCustomSize} className="active:scale-[0.98]">
               +
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                setShowCustom(false);
-                setCustomInput("");
-              }}
+            <button
+              type="button"
+              onClick={() => { setShowCustom(false); setCustomInput(""); }}
+              className="px-2 text-muted-foreground hover:text-foreground"
             >
               &times;
-            </Button>
+            </button>
           </div>
         )}
       </div>
 
       {tooFew && (
-        <p className="text-sm text-destructive">{t("minSelection")}</p>
+        <p className="text-[13px] text-destructive">{t("minSelection")}</p>
       )}
     </div>
   );

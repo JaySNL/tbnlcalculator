@@ -30,9 +30,12 @@ export interface ElectricityPriceBreakdown {
   networkCostEur: number; // inkoopvergoeding / ODE (incl BTW) ~€0.02
 }
 
+export type ContractType = "fixed" | "dynamic";
+
 export interface FinancialConfig {
+  contractType: ContractType;
   importPrice: ElectricityPriceBreakdown;
-  exportPriceEur: number; // net terugleververgoeding after fees
+  exportPriceEur: number;
   saldering: boolean;
   annualPriceIncrease: number; // 0-1
   timeframeYears: number;

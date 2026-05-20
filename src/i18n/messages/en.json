@@ -46,6 +46,9 @@
     "financial": {
       "title": "Financial",
       "subtitle": "Energy prices and investment details",
+      "contractType": "Energy contract",
+      "fixed": "Fixed / Variable",
+      "dynamic": "Dynamic",
       "importPrice": "Electricity price (import)",
       "exportPrice": "Feed-in tariff",
       "saldering": "I currently have net metering",
@@ -58,7 +61,6 @@
     "results": {
       "title": "Results",
       "subtitle": "Battery size comparison",
-      "recommended": "Recommended",
       "annualSavings": "Annual savings",
       "selfConsumption": "Self-consumption",
       "paybackPeriod": "Payback period",
@@ -69,7 +71,14 @@
       "roi": "Return (ROI)",
       "yearsUnit": "years",
       "noRecommendation": "No battery pays back within the analysis period",
-      "recommendationReason": "Best ratio between payback period and investment"
+      "effectiveCapacity": "Effective",
+      "investment": "Investment",
+      "costPerKwh": "Cost per kWh",
+      "savingsEnergy": "Electricity (incl. VAT)",
+      "savingsEnergyTax": "Energy tax",
+      "savingsNetworkCost": "Procurement fee",
+      "savingsTotal": "Total savings",
+      "usable": "usable"
     },
     "charts": {
       "energyFlow": "Monthly Energy Overview",
@@ -81,6 +90,7 @@
       "batteryDischarge": "Battery discharge",
       "gridImport": "Grid import",
       "gridExport": "Grid export",
+      "selfConsumptionCurve": "Self-consumption by battery size",
       "selfConsumed": "Direct self-consumption",
       "batterySoc": "Battery SOC",
       "cumulativeSavings": "Cumulative savings",

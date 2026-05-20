@@ -46,6 +46,9 @@
     "financial": {
       "title": "Financieel",
       "subtitle": "Energieprijzen en investeringsgegevens",
+      "contractType": "Stroomcontract",
+      "fixed": "Vast / Variabel",
+      "dynamic": "Dynamisch",
       "importPrice": "Stroomprijs (inkoop)",
       "exportPrice": "Terugleverprijs",
       "saldering": "Ik heb nu salderingsregeling",
@@ -58,7 +61,6 @@
     "results": {
       "title": "Resultaten",
       "subtitle": "Vergelijking van batterijgroottes",
-      "recommended": "Aanbevolen",
       "annualSavings": "Jaarlijkse besparing",
       "selfConsumption": "Zelfverbruik",
       "paybackPeriod": "Terugverdientijd",
@@ -69,7 +71,14 @@
       "roi": "Rendement (ROI)",
       "yearsUnit": "jaar",
       "noRecommendation": "Geen batterij verdient zich terug binnen de analyseperiode",
-      "recommendationReason": "Beste verhouding tussen terugverdientijd en investering"
+      "effectiveCapacity": "Effectief",
+      "investment": "Investering",
+      "costPerKwh": "Kosten per kWh",
+      "savingsEnergy": "Stroom (incl. BTW)",
+      "savingsEnergyTax": "Energiebelasting",
+      "savingsNetworkCost": "Inkoopvergoeding",
+      "savingsTotal": "Totaal besparing",
+      "usable": "bruikbaar"
     },
     "charts": {
       "energyFlow": "Maandelijks Energieoverzicht",
@@ -81,6 +90,7 @@
       "batteryDischarge": "Batterij ontladen",
       "gridImport": "Netimport",
       "gridExport": "Netexport",
+      "selfConsumptionCurve": "Zelfconsumptie per batterijgrootte",
       "selfConsumed": "Direct zelfverbruik",
       "batterySoc": "Batterij SOC",
       "cumulativeSavings": "Cumulatieve besparing",

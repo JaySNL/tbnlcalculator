@@ -64,7 +64,14 @@ export function Calculator() {
             results={results}
             financialConfig={formData.financial}
           />
-          <ChartsSection results={results} />
+          <ChartsSection
+            results={results}
+            simulationInput={{
+              annualConsumptionKwh: formData.consumption,
+              solar: formData.solar,
+            }}
+            selectedSizes={formData.batterySizes}
+          />
         </div>
       )}
     </div>

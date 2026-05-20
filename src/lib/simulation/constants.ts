@@ -116,8 +116,16 @@ export function getTotalImportPrice(price: ElectricityPriceBreakdown): number {
   return price.energyPriceEur + price.energyTaxEur + price.networkCostEur;
 }
 
+// Fixed contract: higher all-in price ~€0.30/kWh, lower export
+export const FIXED_IMPORT_PRICE: ElectricityPriceBreakdown = {
+  energyPriceEur: 0.17,
+  energyTaxEur: 0.11,
+  networkCostEur: 0.02,
+};
+
 // Net export: ~€0.02/kWh after terugleverkosten
 export const DEFAULT_FINANCIAL_CONFIG: FinancialConfig = {
+  contractType: "dynamic",
   importPrice: { ...DEFAULT_IMPORT_PRICE },
   exportPriceEur: 0.02,
   saldering: false,

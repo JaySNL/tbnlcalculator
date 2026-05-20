@@ -13,7 +13,6 @@ export function ResultsSection({
   results,
 }: ResultsSectionProps) {
   const t = useTranslations("calculator.results");
-  const recommended = results.find((r) => r.isRecommended);
 
   return (
     <section className="space-y-5">
@@ -24,29 +23,6 @@ export function ResultsSection({
       </div>
 
       <ComparisonTable results={results} />
-
-      <p className="text-sm text-muted-foreground">
-        {recommended ? (
-          <>
-            <span className="font-medium text-foreground">
-              {recommended.batteryConfig.sizeKwh} kWh
-            </span>
-            {" — "}
-            {t("recommendationReason")}
-            {recommended.paybackYears !== null && (
-              <>
-                {" ("}
-                <span className="tabular-nums">
-                  {recommended.paybackYears.toFixed(1)}
-                </span>
-                {` ${t("yearsUnit")})`}
-              </>
-            )}
-          </>
-        ) : (
-          t("noRecommendation")
-        )}
-      </p>
     </section>
   );
 }

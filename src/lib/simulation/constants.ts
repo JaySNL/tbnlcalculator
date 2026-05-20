@@ -100,11 +100,13 @@ export function createDefaultBatteryConfig(sizeKwh: number): BatteryConfig {
   };
 }
 
-// Default financial config for NL market (2026)
+// Default financial config for NL market (2026, forward-looking to post-saldering)
+// Export price post-2027: nearly worthless on fixed contracts (€0.002-0.005),
+// legal minimum = 50% of bare leveringstarief (~€0.04). Default conservative.
 export const DEFAULT_FINANCIAL_CONFIG: FinancialConfig = {
   importPriceEur: 0.28,
-  exportPriceEur: 0.07,
-  saldering: false, // post-2027 default (forward-looking)
+  exportPriceEur: 0.04,
+  saldering: false,
   batteryCostPerKwh: 500,
   annualPriceIncrease: 0.02,
   timeframeYears: 15,

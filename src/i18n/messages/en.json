@@ -48,9 +48,9 @@
       "subtitle": "Energy prices and investment details",
       "importPrice": "Electricity price (import)",
       "exportPrice": "Feed-in tariff",
-      "saldering": "Net metering",
-      "salderingOn": "Active (current regulation)",
-      "salderingOff": "Inactive (post-2027)",
+      "saldering": "I currently have net metering",
+      "salderingOn": "Year 1 with net metering, then without (ends 2027)",
+      "salderingOff": "Calculate without net metering (post-2027)",
       "batteryPrice": "Battery cost per kWh",
       "priceIncrease": "Annual price increase",
       "timeframe": "Analysis period"

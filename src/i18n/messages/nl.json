@@ -48,9 +48,9 @@
       "subtitle": "Energieprijzen en investeringsgegevens",
       "importPrice": "Stroomprijs (inkoop)",
       "exportPrice": "Terugleverprijs",
-      "saldering": "Salderingsregeling",
-      "salderingOn": "Actief (huidige regeling)",
-      "salderingOff": "Inactief (na 2027)",
+      "saldering": "Ik heb nu salderingsregeling",
+      "salderingOn": "Jaar 1 met saldering, daarna zonder (stopt 2027)",
+      "salderingOff": "Berekening zonder saldering (na 2027)",
       "batteryPrice": "Batterijkosten per kWh",
       "priceIncrease": "Jaarlijkse prijsstijging",
       "timeframe": "Analyseperiode"

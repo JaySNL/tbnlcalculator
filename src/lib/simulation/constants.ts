@@ -101,11 +101,12 @@ export function createDefaultBatteryConfig(sizeKwh: number): BatteryConfig {
 }
 
 // Default financial config for NL market (2026, forward-looking to post-saldering)
-// Export price post-2027: nearly worthless on fixed contracts (€0.002-0.005),
-// legal minimum = 50% of bare leveringstarief (~€0.04). Default conservative.
+// Import: ~€0.30/kWh all-in (energy + tax + network + btw). Source: CBS/MilieuCentraal 2025-2026
+// Export: net ~€0.02/kWh after terugleverkosten (bruto €0.05-0.09 minus fees €0.04-0.10)
+// Source: energievergelijk.nl, Vattenfall/Essent tariffs 2026
 export const DEFAULT_FINANCIAL_CONFIG: FinancialConfig = {
-  importPriceEur: 0.28,
-  exportPriceEur: 0.04,
+  importPriceEur: 0.30,
+  exportPriceEur: 0.02,
   saldering: false,
   batteryCostPerKwh: 500,
   annualPriceIncrease: 0.02,

@@ -85,7 +85,7 @@ export function SolarConfig({ value, onChange }: SolarConfigProps) {
                 className={cn(
                   "rounded-md py-2.5 text-center font-mono text-sm transition-all duration-200 active:scale-[0.98]",
                   isSelected
-                    ? "bg-foreground text-background shadow-sm"
+                    ? "bg-brand text-brand-foreground shadow-sm"
                     : "bg-muted hover:bg-muted/80",
                 )}
               >
@@ -111,7 +111,7 @@ export function SolarConfig({ value, onChange }: SolarConfigProps) {
                 className={cn(
                   "flex flex-col items-center gap-0.5 rounded-md py-2.5 transition-all duration-200 active:scale-[0.98]",
                   isSelected
-                    ? "bg-foreground text-background shadow-sm"
+                    ? "bg-brand text-brand-foreground shadow-sm"
                     : "bg-muted hover:bg-muted/80",
                 )}
               >
@@ -119,7 +119,7 @@ export function SolarConfig({ value, onChange }: SolarConfigProps) {
                 <span
                   className={cn(
                     "font-mono text-[11px]",
-                    isSelected ? "text-background/50" : "text-muted-foreground",
+                    isSelected ? "text-brand-foreground/50" : "text-muted-foreground",
                   )}
                 >
                   {factor}%
@@ -151,10 +151,10 @@ export function SolarConfig({ value, onChange }: SolarConfigProps) {
 
       {/* Yield summary */}
       <div className="flex items-baseline justify-between rounded-md bg-brand-muted px-5 py-3.5">
-        <span className="text-[13px] font-medium text-brand-foreground/80">{t("annualYield")}</span>
-        <span className="font-mono text-2xl font-medium tracking-tight text-brand-foreground">
+        <span className="text-[13px] font-medium text-brand">{t("annualYield")}</span>
+        <span className="font-mono text-2xl font-medium tracking-tight text-foreground">
           {annualYield.toLocaleString()}
-          <span className="ml-1.5 text-sm font-normal text-brand-foreground/50">
+          <span className="ml-1.5 text-sm font-normal text-muted-foreground">
             kWh
           </span>
         </span>

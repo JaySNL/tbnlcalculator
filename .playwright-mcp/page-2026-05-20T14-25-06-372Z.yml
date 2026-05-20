@@ -1,0 +1,217 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - heading "Batterij Calculator" [level=1] [ref=e6]
+        - paragraph [ref=e7]: Bereken de ideale thuisbatterij voor jouw woning
+      - generic [ref=e8]:
+        - button "NL" [ref=e9]
+        - button "EN" [ref=e10]
+    - generic [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - generic [ref=e14]: 1/4
+          - heading "Jouw Energieprofiel" [level=2] [ref=e15]
+          - paragraph [ref=e16]: Hoe ziet jouw dagelijkse energieverbruik eruit?
+        - generic [ref=e17]:
+          - generic [ref=e18]:
+            - button "Werkend 3,250 kWh" [ref=e19]:
+              - generic [ref=e20]: Werkend
+              - generic [ref=e21]: 3,250 kWh
+            - button "Thuiswerk 4,250 kWh" [ref=e22]:
+              - generic [ref=e23]: Thuiswerk
+              - generic [ref=e24]: 4,250 kWh
+            - button "Gezin 5,000 kWh" [ref=e25]:
+              - generic [ref=e26]: Gezin
+              - generic [ref=e27]: 5,000 kWh
+            - button "Eigen opgave" [ref=e28]:
+              - generic [ref=e29]: Eigen opgave
+          - generic [ref=e30]:
+            - generic [ref=e31]: Geschat jaarverbruik
+            - generic [ref=e32]: 3,250kWh
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - generic [ref=e35]: 2/4
+          - heading "Zonnepanelen" [level=2] [ref=e36]
+          - paragraph [ref=e37]: Jouw zonne-installatie
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e41]: Aantal panelen
+              - generic [ref=e42]:
+                - text: "10"
+                - generic [ref=e43]: (4.0 kWp)
+            - group [ref=e44]:
+              - slider [ref=e49]: "10"
+          - generic [ref=e50]:
+            - text: Vermogen per paneel
+            - generic [ref=e51]:
+              - button "350 Wp" [ref=e52]:
+                - generic [ref=e53]: 350 Wp
+              - button "400 Wp" [ref=e54]:
+                - generic [ref=e55]: 400 Wp
+              - button "450 Wp" [ref=e56]:
+                - generic [ref=e57]: 450 Wp
+          - generic [ref=e58]:
+            - text: Oriëntatie
+            - generic [ref=e59]:
+              - button "Zuid 100%" [ref=e60]:
+                - generic [ref=e61]: Zuid
+                - generic [ref=e62]: 100%
+              - button "ZO/ZW 95%" [ref=e63]:
+                - generic [ref=e64]: ZO/ZW
+                - generic [ref=e65]: 95%
+              - button "Oost/West 85%" [ref=e66]:
+                - generic [ref=e67]: Oost/West
+                - generic [ref=e68]: 85%
+              - button "Noord 55%" [ref=e69]:
+                - generic [ref=e70]: Noord
+                - generic [ref=e71]: 55%
+          - generic [ref=e72]:
+            - generic [ref=e73]:
+              - generic [ref=e74]: Schaduw
+              - generic [ref=e75]: 0%
+            - group [ref=e76]:
+              - slider [ref=e81]: "0"
+            - generic [ref=e82]:
+              - generic [ref=e83]: Geen schaduw
+              - generic [ref=e84]: Veel schaduw
+          - generic [ref=e85]:
+            - generic [ref=e86]: Geschatte jaaropbrengst
+            - generic [ref=e87]: 3,792kWh
+      - generic [ref=e88]:
+        - generic [ref=e89]:
+          - generic [ref=e90]: 3/4
+          - heading "Batterij Vergelijking" [level=2] [ref=e91]
+          - paragraph [ref=e92]: Kies 2-4 batterijgroottes om te vergelijken
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - button "5 kWh" [ref=e95]:
+              - generic [ref=e96]: "5"
+              - generic [ref=e97]: kWh
+            - button "7 kWh" [ref=e98]:
+              - generic [ref=e99]: "7"
+              - generic [ref=e100]: kWh
+            - button "10 kWh" [ref=e101]:
+              - generic [ref=e102]: "10"
+              - generic [ref=e103]: kWh
+            - button "13.5 kWh" [ref=e104]:
+              - generic [ref=e105]: "13.5"
+              - generic [ref=e106]: kWh
+            - button "15 kWh" [ref=e107]:
+              - generic [ref=e108]: "15"
+              - generic [ref=e109]: kWh
+            - button "20 kWh" [ref=e110]:
+              - generic [ref=e111]: "20"
+              - generic [ref=e112]: kWh
+          - button "+ Eigen grootte" [ref=e114]
+      - generic [ref=e115]:
+        - generic [ref=e116]:
+          - generic [ref=e117]: 4/4
+          - heading "Financieel" [level=2] [ref=e118]
+          - paragraph [ref=e119]: Energieprijzen en investeringsgegevens
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - generic [ref=e123]: Stroomprijs (inkoop)
+              - generic [ref=e124]:
+                - generic [ref=e125]: €
+                - spinbutton [ref=e126]: "0.28"
+                - generic [ref=e127]: /kWh
+            - generic [ref=e128]:
+              - generic [ref=e129]: Terugleverprijs
+              - generic [ref=e130]:
+                - generic [ref=e131]: €
+                - spinbutton [ref=e132]: "0.07"
+                - generic [ref=e133]: /kWh
+          - generic [ref=e135]:
+            - generic [ref=e136]:
+              - generic [ref=e137]: Salderingsregeling
+              - paragraph [ref=e138]: Inactief (na 2027)
+            - switch [ref=e139]
+            - checkbox [ref=e140]
+          - generic [ref=e141]:
+            - generic [ref=e142]: Batterijkosten per kWh
+            - generic [ref=e143]:
+              - generic [ref=e144]: €
+              - spinbutton [ref=e145]: "500"
+              - generic [ref=e146]: /kWh
+          - generic [ref=e147]:
+            - generic [ref=e148]:
+              - generic [ref=e149]: Jaarlijkse prijsstijging
+              - generic [ref=e150]: 2%
+            - group [ref=e151]:
+              - slider [ref=e156]: "2"
+          - generic [ref=e157]:
+            - generic [ref=e158]:
+              - generic [ref=e159]: Analyseperiode
+              - generic [ref=e160]: 15years
+            - group [ref=e161]:
+              - slider [ref=e166]: "15"
+    - generic [ref=e167]:
+      - generic [ref=e168]:
+        - heading "Resultaten" [level=2] [ref=e170]
+        - table [ref=e172]:
+          - rowgroup [ref=e173]:
+            - row "5kWh 10kWh 15kWh" [ref=e174]:
+              - columnheader [ref=e175]
+              - columnheader "5kWh" [ref=e176]
+              - columnheader "10kWh" [ref=e177]
+              - columnheader "15kWh" [ref=e178]
+          - rowgroup [ref=e179]:
+            - row "Jaarlijkse besparing € 128 € 129 € 130" [ref=e180]:
+              - cell "Jaarlijkse besparing" [ref=e181]
+              - cell "€ 128" [ref=e182]
+              - cell "€ 129" [ref=e183]
+              - cell "€ 130" [ref=e184]
+            - row "Zelfverbruik 63.6% 63.7% 63.8%" [ref=e185]:
+              - cell "Zelfverbruik" [ref=e186]
+              - cell "63.6%" [ref=e187]
+              - cell "63.7%" [ref=e188]
+              - cell "63.8%" [ref=e189]
+            - row "Terugverdientijd — — —" [ref=e190]:
+              - cell "Terugverdientijd" [ref=e191]
+              - cell "—" [ref=e192]
+              - cell "—" [ref=e193]
+              - cell "—" [ref=e194]
+            - row "Cycli per jaar 151 75 50" [ref=e195]:
+              - cell "Cycli per jaar" [ref=e196]
+              - cell "151" [ref=e197]
+              - cell "75" [ref=e198]
+              - cell "50" [ref=e199]
+            - row "Batterijgezondheid 86.0% 89.5% 90.7%" [ref=e200]:
+              - cell "Batterijgezondheid" [ref=e201]
+              - cell "86.0%" [ref=e202]
+              - cell "89.5%" [ref=e203]
+              - cell "90.7%" [ref=e204]
+            - row "Totale besparing € 2.210 € 2.226 € 2.242" [ref=e205]:
+              - cell "Totale besparing" [ref=e206]
+              - cell "€ 2.210" [ref=e207]
+              - cell "€ 2.226" [ref=e208]
+              - cell "€ 2.242" [ref=e209]
+            - row "Rendement (ROI) -11.6% -55.5% -70.1%" [ref=e210]:
+              - cell "Rendement (ROI)" [ref=e211]
+              - cell "-11.6%" [ref=e212]
+              - cell "-55.5%" [ref=e213]
+              - cell "-70.1%" [ref=e214]
+        - paragraph [ref=e215]: Geen batterij verdient zich terug binnen de analyseperiode
+      - generic [ref=e216]:
+        - heading "Maandelijks Energieoverzicht" [level=3] [ref=e218]
+        - heading "Terugverdientijd" [level=3] [ref=e222]
+        - generic [ref=e226]:
+          - heading "Dagprofiel" [level=3] [ref=e227]
+          - generic [ref=e228]:
+            - text: Selecteer maand
+            - combobox "Selecteer maand" [ref=e229]:
+              - option "Jan"
+              - option "Feb"
+              - option "Mrt"
+              - option "Apr"
+              - option "Mei"
+              - option "Jun" [selected]
+              - option "Jul"
+              - option "Aug"
+              - option "Sep"
+              - option "Okt"
+              - option "Nov"
+              - option "Dec"

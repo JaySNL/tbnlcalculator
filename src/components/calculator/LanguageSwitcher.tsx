@@ -28,7 +28,7 @@ export function LanguageSwitcher() {
           className={cn(
             "rounded px-2.5 py-1 text-xs font-medium transition-colors",
             locale === code
-              ? "bg-foreground text-background"
+              ? "bg-brand text-brand-foreground"
               : "text-muted-foreground hover:text-foreground",
           )}
         >

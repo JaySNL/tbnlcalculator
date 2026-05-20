@@ -55,7 +55,7 @@ export function BatterySelector({ value, onChange }: BatterySelectorProps) {
                 "relative flex flex-col items-center gap-0.5 rounded-md py-3.5 transition-all duration-200 active:scale-[0.98]",
                 disabled && "cursor-not-allowed opacity-25",
                 isSelected
-                  ? "bg-foreground text-background shadow-sm"
+                  ? "bg-brand text-brand-foreground shadow-sm"
                   : "bg-muted hover:bg-muted/80",
               )}
             >
@@ -65,7 +65,7 @@ export function BatterySelector({ value, onChange }: BatterySelectorProps) {
               <span
                 className={cn(
                   "text-[11px]",
-                  isSelected ? "text-background/50" : "text-muted-foreground",
+                  isSelected ? "text-brand-foreground/50" : "text-muted-foreground",
                 )}
               >
                 kWh

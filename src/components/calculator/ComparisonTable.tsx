@@ -63,7 +63,7 @@ export function ComparisonTable({ results }: ComparisonTableProps) {
                   key={r.batteryConfig.sizeKwh}
                   className={cn(
                     "pb-3 text-center",
-                    r.isRecommended && "text-foreground",
+                    r.isRecommended && "text-brand",
                   )}
                 >
                   <span className="text-lg font-semibold tabular-nums">
@@ -90,7 +90,7 @@ export function ComparisonTable({ results }: ComparisonTableProps) {
                     key={r.batteryConfig.sizeKwh}
                     className={cn(
                       "py-2.5 text-center font-medium tabular-nums",
-                      r.isRecommended && "bg-muted/50",
+                      r.isRecommended && "bg-brand-muted/40",
                     )}
                   >
                     {row.getValue(r, locale, yearsUnit)}
@@ -109,7 +109,7 @@ export function ComparisonTable({ results }: ComparisonTableProps) {
             key={r.batteryConfig.sizeKwh}
             className={cn(
               "rounded-lg border p-4",
-              r.isRecommended && "border-foreground",
+              r.isRecommended && "border-brand",
             )}
           >
             <div className="mb-3 flex items-baseline justify-between">
@@ -120,7 +120,7 @@ export function ComparisonTable({ results }: ComparisonTableProps) {
                 <span className="ml-1 text-sm text-muted-foreground">kWh</span>
               </div>
               {r.isRecommended && (
-                <span className="bg-foreground text-background rounded px-2 py-0.5 text-xs font-medium">
+                <span className="bg-brand text-brand-foreground rounded px-2 py-0.5 text-xs font-medium">
                   {t("recommended")}
                 </span>
               )}

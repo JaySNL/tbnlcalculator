@@ -1,0 +1,66 @@
+[    1779ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    1815ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    1900ms] [ERROR] Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `div`.  It was passed a child from ComparisonTable. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:3318
+[    1902ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    1902ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    1903ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    1903ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    1904ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    1904ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    6617ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    6617ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    6618ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    6618ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    6619ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    6619ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  424827ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[  425758ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=q72BUiIiuzTcz1H5Ib6dX' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  426760ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=q72BUiIiuzTcz1H5Ib6dX' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  427762ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=q72BUiIiuzTcz1H5Ib6dX' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  428765ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=q72BUiIiuzTcz1H5Ib6dX' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  429770ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=q72BUiIiuzTcz1H5Ib6dX' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  434776ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=q72BUiIiuzTcz1H5Ib6dX' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  439782ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=q72BUiIiuzTcz1H5Ib6dX' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  444798ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=q72BUiIiuzTcz1H5Ib6dX' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  449820ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=q72BUiIiuzTcz1H5Ib6dX' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  454856ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=q72BUiIiuzTcz1H5Ib6dX' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  460017ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=q72BUiIiuzTcz1H5Ib6dX' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  465314ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=q72BUiIiuzTcz1H5Ib6dX' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322

@@ -53,7 +53,7 @@ export function ProfileSelector({ value, onChange }: ProfileSelectorProps) {
                 "relative flex flex-col gap-0.5 rounded-md px-4 py-3 text-left transition-all duration-200",
                 "active:scale-[0.98]",
                 isSelected
-                  ? "bg-foreground text-background shadow-sm"
+                  ? "bg-brand text-brand-foreground shadow-sm"
                   : "bg-muted hover:bg-muted/80 hover:shadow-sm",
               )}
             >
@@ -62,7 +62,7 @@ export function ProfileSelector({ value, onChange }: ProfileSelectorProps) {
                 <span
                   className={cn(
                     "font-mono text-xs",
-                    isSelected ? "text-background/60" : "text-muted-foreground",
+                    isSelected ? "text-brand-foreground/60" : "text-muted-foreground",
                   )}
                 >
                   {HOUSEHOLD_PROFILES[key].toLocaleString()} kWh

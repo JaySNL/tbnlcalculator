@@ -51,31 +51,32 @@ export function EnergyFlowChart({ results }: EnergyFlowChartProps) {
           >
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
+              stroke="var(--border)"
               opacity={0.6}
             />
             <XAxis
               dataKey="month"
-              tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+              tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
               tickLine={false}
-              axisLine={{ stroke: "hsl(var(--border))" }}
+              axisLine={{ stroke: "var(--border)" }}
             />
             <YAxis
-              tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+              tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v: number) => `${v} kWh`}
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: "hsl(var(--background))",
-                border: "1px solid hsl(var(--border))",
+                backgroundColor: "var(--background)",
+                border: "1px solid var(--border)",
                 borderRadius: "0.375rem",
                 fontSize: 12,
+                color: "var(--foreground)",
               }}
               formatter={(value) => [`${Number(value)} kWh`]}
             />
-            <Legend wrapperStyle={{ fontSize: 11, paddingTop: 4 }} />
+            <Legend wrapperStyle={{ fontSize: 11, paddingTop: 4, color: "var(--muted-foreground)" }} />
             <Bar
               dataKey="selfConsumed"
               name={t("selfConsumed")}

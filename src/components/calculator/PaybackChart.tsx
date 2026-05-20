@@ -65,32 +65,33 @@ export function PaybackChart({ results }: PaybackChartProps) {
           >
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
+              stroke="var(--border)"
               opacity={0.6}
             />
             <XAxis
               dataKey="year"
-              tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+              tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
               tickLine={false}
-              axisLine={{ stroke: "hsl(var(--border))" }}
+              axisLine={{ stroke: "var(--border)" }}
             />
             <YAxis
-              tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+              tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v: number) => `€${v}`}
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: "hsl(var(--background))",
-                border: "1px solid hsl(var(--border))",
+                backgroundColor: "var(--background)",
+                border: "1px solid var(--border)",
                 borderRadius: "0.375rem",
                 fontSize: 12,
+                color: "var(--foreground)",
               }}
               formatter={(value) => [`€${Number(value)}`]}
             />
             <Legend
-              wrapperStyle={{ fontSize: 11, paddingTop: 4 }}
+              wrapperStyle={{ fontSize: 11, paddingTop: 4, color: "var(--muted-foreground)" }}
               formatter={(value: string) => `${value} kWh`}
             />
             {results.map((r, i) => (

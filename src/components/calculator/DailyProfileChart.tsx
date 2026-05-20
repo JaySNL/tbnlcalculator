@@ -60,7 +60,7 @@ export function DailyProfileChart({
           <select
             value={month}
             onChange={(e) => setMonth(Number(e.target.value))}
-            className="rounded border border-border bg-transparent px-2 py-1 text-xs text-foreground"
+            className="rounded border border-border bg-muted px-2 py-1 text-xs text-foreground"
           >
             {months.map((name, i) => (
               <option key={i} value={i}>
@@ -78,18 +78,18 @@ export function DailyProfileChart({
           >
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
+              stroke="var(--border)"
               opacity={0.6}
             />
             <XAxis
               dataKey="hour"
-              tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+              tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
               tickLine={false}
               interval={3}
-              axisLine={{ stroke: "hsl(var(--border))" }}
+              axisLine={{ stroke: "var(--border)" }}
             />
             <YAxis
-              tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+              tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v: number) => `${v}`}
@@ -97,14 +97,15 @@ export function DailyProfileChart({
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: "hsl(var(--background))",
-                border: "1px solid hsl(var(--border))",
+                backgroundColor: "var(--background)",
+                border: "1px solid var(--border)",
                 borderRadius: "0.375rem",
                 fontSize: 12,
+                color: "var(--foreground)",
               }}
               formatter={(value) => [`${Number(value)} kWh`]}
             />
-            <Legend wrapperStyle={{ fontSize: 11, paddingTop: 4 }} />
+            <Legend wrapperStyle={{ fontSize: 11, paddingTop: 4, color: "var(--muted-foreground)" }} />
             <Area
               dataKey="solar"
               name={t("solarProduction")}

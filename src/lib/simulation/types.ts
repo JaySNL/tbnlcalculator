@@ -8,26 +8,33 @@ export type Orientation =
 
 export interface SolarConfig {
   panelCount: number;
-  panelWattage: number; // Wp per panel
+  panelWattage: number;
   orientation: Orientation;
-  shadingFactor: number; // 0-1 (0 = no shading, 1 = full shading)
+  shadingFactor: number; // 0-1
 }
 
 export interface BatteryConfig {
   sizeKwh: number;
+  depthOfDischarge: number; // 0-1 (e.g. 0.9 = 90% usable)
   maxChargeRateKw: number;
   maxDischargeRateKw: number;
   roundTripEfficiency: number; // 0-1
   ratedCycles: number;
-  endOfLifeDegradation: number; // 0-1 (e.g. 0.8 = 80% capacity at end of life)
+  endOfLifeDegradation: number; // 0-1
+}
+
+// NL electricity price is composed of multiple components
+export interface ElectricityPriceBreakdown {
+  energyPriceEur: number; // bare energy cost (incl BTW) ~€0.12
+  energyTaxEur: number; // energiebelasting (incl BTW) ~€0.11
+  networkCostEur: number; // inkoopvergoeding / ODE (incl BTW) ~€0.02
 }
 
 export interface FinancialConfig {
-  importPriceEur: number; // EUR per kWh
-  exportPriceEur: number; // EUR per kWh
-  saldering: boolean; // net metering active
-  batteryCostPerKwh: number; // EUR per kWh installed
-  annualPriceIncrease: number; // 0-1 (e.g. 0.02 = 2%)
+  importPrice: ElectricityPriceBreakdown;
+  exportPriceEur: number; // net terugleververgoeding after fees
+  saldering: boolean;
+  annualPriceIncrease: number; // 0-1
   timeframeYears: number;
 }
 
@@ -38,24 +45,24 @@ export interface SimulationInput {
 
 export interface HourlyDataPoint {
   hour: number;
-  solarProduction: number; // kWh
-  consumption: number; // kWh
-  batteryCharge: number; // kWh charged this hour
-  batteryDischarge: number; // kWh discharged this hour
-  batterySoc: number; // kWh in battery after this hour
-  gridImport: number; // kWh from grid
-  gridExport: number; // kWh to grid
+  solarProduction: number;
+  consumption: number;
+  batteryCharge: number;
+  batteryDischarge: number;
+  batterySoc: number;
+  gridImport: number;
+  gridExport: number;
 }
 
 export interface MonthlyBreakdown {
-  month: number; // 0-11
-  solarProduction: number; // kWh
-  consumption: number; // kWh
-  selfConsumedDirect: number; // kWh solar used directly
-  batteryCharged: number; // kWh
-  batteryDischarged: number; // kWh
-  gridImport: number; // kWh
-  gridExport: number; // kWh
+  month: number;
+  solarProduction: number;
+  consumption: number;
+  selfConsumedDirect: number;
+  batteryCharged: number;
+  batteryDischarged: number;
+  gridImport: number;
+  gridExport: number;
   cycles: number;
   hourlyData: HourlyDataPoint[];
 }
@@ -66,34 +73,42 @@ export interface YearResult {
   monthlyBreakdown: MonthlyBreakdown[];
   totalSolarProduction: number;
   totalConsumption: number;
-  totalSelfConsumed: number; // direct + battery
+  totalSelfConsumed: number;
   totalGridImport: number;
   totalGridExport: number;
   totalCycles: number;
   selfConsumptionRatio: number; // 0-1
 }
 
+export interface SavingsBreakdown {
+  energy: number; // saved on bare energy cost
+  energyTax: number; // saved on energiebelasting
+  networkCost: number; // saved on inkoopvergoeding/ODE
+  total: number; // sum
+}
+
 export interface FinancialYearResult {
   year: number;
-  annualSavings: number; // EUR
-  cumulativeSavings: number; // EUR
-  importPrice: number; // EUR/kWh for this year
-  exportPrice: number; // EUR/kWh for this year
+  savings: SavingsBreakdown;
+  cumulativeSavings: number;
+  importPriceTotal: number; // total EUR/kWh for this year
+  exportPrice: number;
 }
 
 export interface ComparisonResult {
   batteryConfig: BatteryConfig;
   yearResults: YearResult[];
   financialResults: FinancialYearResult[];
-  totalSavings: number; // EUR over timeframe
-  annualSavingsFirstYear: number; // EUR
-  paybackYears: number | null; // null if never pays back
-  roi: number; // percentage
+  totalSavings: number;
+  annualSavingsFirstYear: SavingsBreakdown;
+  paybackYears: number | null;
+  roi: number;
   averageCyclesPerYear: number;
-  finalBatteryHealth: number; // 0-1
-  selfConsumptionRatio: number; // 0-1 (first year)
+  finalBatteryHealth: number;
+  selfConsumptionRatio: number;
+  gridDependencyRatio: number; // netafhankelijkheid
   isRecommended: boolean;
-  totalInvestment: number; // EUR
+  totalInvestment: number;
 }
 
 export interface BaselineResult {

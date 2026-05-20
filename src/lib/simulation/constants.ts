@@ -1,54 +1,27 @@
 import type {
   BatteryConfig,
   FinancialConfig,
+  ElectricityPriceBreakdown,
   HouseholdProfileKey,
   Orientation,
 } from "./types";
 
-// NL annual solar yield: ~948 kWh per kWp (PVGIS/MilieuCentraal reference)
 export const ANNUAL_YIELD_KWH_PER_KWP = 948;
 
-// Monthly solar production weights (fraction of annual total)
-// Source: PVGIS data for Netherlands, validated against v1 constants
 export const MONTHLY_SOLAR_WEIGHTS = [
-  0.026, // Jan  - 25 kWh/kWp
-  0.042, // Feb  - 40 kWh/kWp
-  0.084, // Mar  - 80 kWh/kWp
-  0.116, // Apr  - 110 kWh/kWp
-  0.137, // May  - 130 kWh/kWp
-  0.142, // Jun  - 135 kWh/kWp
-  0.137, // Jul  - 130 kWh/kWp
-  0.121, // Aug  - 115 kWh/kWp
-  0.090, // Sep  - 85 kWh/kWp
-  0.053, // Oct  - 50 kWh/kWp
-  0.030, // Nov  - 28 kWh/kWp
-  0.021, // Dec  - 20 kWh/kWp
+  0.026, 0.042, 0.084, 0.116, 0.137, 0.142,
+  0.137, 0.121, 0.090, 0.053, 0.030, 0.021,
 ] as const;
 
-// Monthly demand weights (multiplier on average daily demand)
-// Higher in winter (heating, lighting), lower in summer
 export const MONTHLY_DEMAND_WEIGHTS = [
-  1.15, // Jan
-  1.1, // Feb
-  1.05, // Mar
-  0.95, // Apr
-  0.9, // May
-  0.85, // Jun
-  0.85, // Jul
-  0.9, // Aug
-  0.95, // Sep
-  1.0, // Oct
-  1.1, // Nov
-  1.15, // Dec
+  1.15, 1.1, 1.05, 0.95, 0.9, 0.85,
+  0.85, 0.9, 0.95, 1.0, 1.1, 1.15,
 ] as const;
 
-// Days per month (non-leap year)
 export const DAYS_PER_MONTH = [
   31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
 ] as const;
 
-// Orientation yield correction factors (fraction of south-facing yield)
-// Source: PVGIS/MilieuCentraal
 export const ORIENTATION_FACTORS: Record<Orientation, number> = {
   south: 1.0,
   southEastWest: 0.95,
@@ -56,16 +29,11 @@ export const ORIENTATION_FACTORS: Record<Orientation, number> = {
   north: 0.55,
 };
 
-// Hourly solar production curve (fraction of daily total per hour)
-// Bell curve approximation for NL latitude, peak around solar noon
-// Hours 0-23. Significant production between 6:00-20:00
 export function getSolarHourlyFraction(hour: number): number {
   if (hour < 5 || hour > 21) return 0;
   return Math.sin(((hour - 5) / 16) * Math.PI);
 }
 
-// Hourly demand curve (fraction of daily total per hour)
-// Dual peak: morning (7-9), evening (17-21), with overnight baseline
 export function getDemandHourlyFraction(hour: number): number {
   const baseLoad = 0.025;
   const morningPeak = hour >= 7 && hour <= 9 ? 0.04 : 0;
@@ -77,7 +45,6 @@ export function getDemandHourlyFraction(hour: number): number {
   return baseLoad + morningPeak + eveningPeak + daytime;
 }
 
-// Household consumption presets (annual kWh)
 export const HOUSEHOLD_PROFILES: Record<HouseholdProfileKey, number> = {
   working: 3250,
   home: 4250,
@@ -85,35 +52,53 @@ export const HOUSEHOLD_PROFILES: Record<HouseholdProfileKey, number> = {
   custom: 3500,
 };
 
-// Common battery sizes available for comparison (kWh)
 export const BATTERY_SIZE_OPTIONS = [5, 7, 10, 13.5, 15, 20] as const;
 
-// Default battery config factory: scales charge/discharge rate with size
+// Battery cost per kWh scales with size — larger = cheaper per kWh
+// Source: jeroen.nl stroomanalyse, thuisbatterijnederland.nl 2026 pricing
+export function getBatteryCostPerKwh(sizeKwh: number): number {
+  if (sizeKwh <= 5) return 550;
+  if (sizeKwh <= 7) return 520;
+  if (sizeKwh <= 10) return 500;
+  if (sizeKwh <= 15) return 460;
+  if (sizeKwh <= 20) return 430;
+  return 395;
+}
+
 export function createDefaultBatteryConfig(sizeKwh: number): BatteryConfig {
   return {
     sizeKwh,
+    depthOfDischarge: 0.9, // 90% usable (industry standard)
     maxChargeRateKw: Math.min(sizeKwh * 0.5, 5),
     maxDischargeRateKw: Math.min(sizeKwh * 0.5, 5),
-    roundTripEfficiency: 0.9,
+    roundTripEfficiency: 0.85, // 85% real-world (jeroen.nl uses 75%, manufacturers claim 90%+)
     ratedCycles: 6000,
     endOfLifeDegradation: 0.8,
   };
 }
 
-// Default financial config for NL market (2026, forward-looking to post-saldering)
-// Import: ~€0.30/kWh all-in (energy + tax + network + btw). Source: CBS/MilieuCentraal 2025-2026
-// Export: net ~€0.02/kWh after terugleverkosten (bruto €0.05-0.09 minus fees €0.04-0.10)
-// Source: energievergelijk.nl, Vattenfall/Essent tariffs 2026
+// NL electricity price breakdown (all incl 21% BTW)
+// Source: jeroen.nl/stroomanalyse, CBS energieprijzen 2025-2026
+export const DEFAULT_IMPORT_PRICE: ElectricityPriceBreakdown = {
+  energyPriceEur: 0.12, // kale stroomprijs incl BTW
+  energyTaxEur: 0.11, // energiebelasting incl BTW
+  networkCostEur: 0.02, // inkoopvergoeding/ODE incl BTW
+};
+
+// Total: €0.25/kWh. Matches jeroen.nl's €0.2520 for dynamic contract.
+export function getTotalImportPrice(price: ElectricityPriceBreakdown): number {
+  return price.energyPriceEur + price.energyTaxEur + price.networkCostEur;
+}
+
+// Net export: ~€0.02/kWh after terugleverkosten
 export const DEFAULT_FINANCIAL_CONFIG: FinancialConfig = {
-  importPriceEur: 0.30,
+  importPrice: { ...DEFAULT_IMPORT_PRICE },
   exportPriceEur: 0.02,
   saldering: false,
-  batteryCostPerKwh: 500,
   annualPriceIncrease: 0.02,
   timeframeYears: 15,
 };
 
-// Default solar config
 export const DEFAULT_SOLAR_CONFIG = {
   panelCount: 10,
   panelWattage: 400,
@@ -121,8 +106,6 @@ export const DEFAULT_SOLAR_CONFIG = {
   shadingFactor: 0,
 };
 
-// Default selected battery sizes for comparison
 export const DEFAULT_BATTERY_SIZES = [5, 10, 15] as const;
 
-// Calendar aging: annual capacity loss independent of cycling
-export const CALENDAR_AGING_PER_YEAR = 0.005; // 0.5% per year
+export const CALENDAR_AGING_PER_YEAR = 0.005;

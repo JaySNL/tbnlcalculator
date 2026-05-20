@@ -35,8 +35,9 @@ type RowDef = {
 };
 
 const ROWS: RowDef[] = [
-  { key: "annualSavings", getValue: (r, l) => fmtEur(r.annualSavingsFirstYear, l) },
+  { key: "annualSavings", getValue: (r, l) => fmtEur(r.annualSavingsFirstYear.total, l) },
   { key: "selfConsumption", getValue: (r) => fmtPct(r.selfConsumptionRatio) },
+  { key: "gridDependency", getValue: (r) => fmtPct(r.gridDependencyRatio) },
   { key: "paybackPeriod", getValue: (r, _l, y) => fmtYears(r.paybackYears, y) },
   { key: "cyclesPerYear", getValue: (r) => Math.round(r.averageCyclesPerYear).toLocaleString() },
   { key: "batteryHealth", getValue: (r) => fmtPct(r.finalBatteryHealth) },

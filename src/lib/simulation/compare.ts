@@ -5,7 +5,7 @@ import type {
   ComparisonResult,
   YearResult,
 } from "./types";
-import { createDefaultBatteryConfig } from "./constants";
+import { createDefaultBatteryConfig, getBatteryCostPerKwh, getTotalImportPrice } from "./constants";
 import { simulateMultiYear } from "./engine";
 import { createDegradationFn } from "./degradation";
 import { calculateFinancials } from "./financial";
@@ -16,6 +16,7 @@ function simulateBaseline(
 ): YearResult[] {
   const zeroBattery: BatteryConfig = {
     sizeKwh: 0,
+    depthOfDischarge: 1,
     maxChargeRateKw: 0,
     maxDischargeRateKw: 0,
     roundTripEfficiency: 1,
@@ -37,11 +38,19 @@ export function compareScenarios(
   const results: ComparisonResult[] = batterySizes.map((size) => {
     const batteryConfig = createDefaultBatteryConfig(size);
     const degradationFn = createDegradationFn(batteryConfig);
+
+    // Apply DoD: degradation function returns effective capacity accounting for both
+    // degradation AND depth of discharge
+    const dodAwareDegradation = (cumulativeCycles: number, year: number) => {
+      const degradedCapacity = degradationFn(cumulativeCycles, year);
+      return degradedCapacity * batteryConfig.depthOfDischarge;
+    };
+
     const yearResults = simulateMultiYear(
       input,
       batteryConfig,
       years,
-      degradationFn,
+      dodAwareDegradation,
     );
 
     const financial = calculateFinancials(
@@ -54,11 +63,17 @@ export function compareScenarios(
     const totalCycles = yearResults.reduce((s, y) => s + y.totalCycles, 0);
     const averageCyclesPerYear = totalCycles / years;
     const lastYear = yearResults[years - 1];
+    const effectiveSize = batteryConfig.sizeKwh * batteryConfig.depthOfDischarge;
     const finalBatteryHealth = lastYear
-      ? lastYear.effectiveCapacityKwh / batteryConfig.sizeKwh
+      ? lastYear.effectiveCapacityKwh / effectiveSize
       : 1;
 
     const firstYear = yearResults[0];
+
+    // Grid dependency = gridImport / totalConsumption
+    const gridDependencyRatio = firstYear
+      ? firstYear.totalGridImport / (firstYear.totalConsumption || 1)
+      : 1;
 
     return {
       batteryConfig,
@@ -69,15 +84,15 @@ export function compareScenarios(
       paybackYears: financial.paybackYears,
       roi: financial.roi,
       averageCyclesPerYear,
-      finalBatteryHealth,
+      finalBatteryHealth: Math.min(1, finalBatteryHealth),
       selfConsumptionRatio: firstYear?.selfConsumptionRatio ?? 0,
+      gridDependencyRatio,
       isRecommended: false,
       totalInvestment: financial.totalInvestment,
     };
   });
 
-  // Sweet spot: best payback-to-investment ratio
-  // Among those that pay back, pick shortest payback. If tie, prefer smaller.
+  // Sweet spot: shortest payback, prefer smaller on tie
   const withPayback = results.filter((r) => r.paybackYears !== null);
 
   if (withPayback.length > 0) {

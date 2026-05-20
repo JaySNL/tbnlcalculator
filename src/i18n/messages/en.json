@@ -65,6 +65,7 @@
       "cyclesPerYear": "Cycles per year",
       "batteryHealth": "Battery health",
       "totalSavings": "Total savings",
+      "gridDependency": "Grid dependency",
       "roi": "Return (ROI)",
       "yearsUnit": "years",
       "noRecommendation": "No battery pays back within the analysis period",

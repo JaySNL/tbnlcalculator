@@ -1,14 +1,16 @@
 import type {
   FinancialConfig,
   FinancialYearResult,
+  SavingsBreakdown,
   YearResult,
   BatteryConfig,
 } from "./types";
+import { getTotalImportPrice, getBatteryCostPerKwh } from "./constants";
 
 export interface FinancialAnalysis {
   yearResults: FinancialYearResult[];
   totalSavings: number;
-  annualSavingsFirstYear: number;
+  annualSavingsFirstYear: SavingsBreakdown;
   paybackYears: number | null;
   roi: number;
   totalInvestment: number;
@@ -17,33 +19,59 @@ export interface FinancialAnalysis {
 function calculateYearSavings(
   batteryYear: YearResult,
   baselineYear: YearResult,
-  importPrice: number,
-  exportPrice: number,
+  financialConfig: FinancialConfig,
+  priceMultiplier: number,
   useSaldering: boolean,
-): number {
+): { savings: SavingsBreakdown; importPriceTotal: number; exportPrice: number } {
+  const ip = financialConfig.importPrice;
+  const energyPrice = ip.energyPriceEur * priceMultiplier;
+  const energyTax = ip.energyTaxEur * priceMultiplier;
+  const networkCost = ip.networkCostEur * priceMultiplier;
+  const importPriceTotal = energyPrice + energyTax + networkCost;
+  const exportPrice = financialConfig.exportPriceEur * priceMultiplier;
+
   if (useSaldering) {
-    // Full saldering: exported kWh offset imported kWh 1:1 (including taxes)
-    // Net cost = max(0, gridImport - gridExport) × importPrice
-    // Battery shifts energy from export→self-consumption, but net stays the same
-    // Under full saldering, battery provides no financial benefit
-    // (and actually loses money due to efficiency, but we floor at 0)
-    const baselineNet = baselineYear.totalGridImport - baselineYear.totalGridExport;
-    const batteryNet = batteryYear.totalGridImport - batteryYear.totalGridExport;
-    const baselineCost = Math.max(0, baselineNet) * importPrice;
-    const batteryCost = Math.max(0, batteryNet) * importPrice;
-    return Math.max(0, baselineCost - batteryCost);
+    // Full saldering: grid acts as battery, no financial benefit from physical battery
+    return {
+      savings: { energy: 0, energyTax: 0, networkCost: 0, total: 0 },
+      importPriceTotal,
+      exportPrice,
+    };
   }
 
-  // No saldering: import costs importPrice, export earns exportPrice
-  // Battery value = avoided imports × importPrice - reduced exports × exportPrice
-  // = shifting kWh from export (€0.07) to self-consumption (avoiding €0.28 import)
-  const baselineCost =
-    baselineYear.totalGridImport * importPrice -
-    baselineYear.totalGridExport * exportPrice;
-  const batteryCost =
-    batteryYear.totalGridImport * importPrice -
-    batteryYear.totalGridExport * exportPrice;
-  return Math.max(0, baselineCost - batteryCost);
+  // Post-saldering: each kWh shifted from export→self-consumption saves the import-export spread
+  // The avoided import has three components: energy, tax, and network cost
+  const avoidedImport = Math.max(0, baselineYear.totalGridImport - batteryYear.totalGridImport);
+  const reducedExport = Math.max(0, baselineYear.totalGridExport - batteryYear.totalGridExport);
+
+  // Net kWh shifted from grid to self-consumption via battery
+  const kwhShifted = Math.min(avoidedImport, reducedExport);
+
+  // Savings per component: each shifted kWh saves the full import price component
+  // but loses the export revenue for that kWh
+  const exportLossPerKwh = exportPrice;
+
+  const energySaved = kwhShifted * (energyPrice - exportLossPerKwh / 3);
+  const taxSaved = kwhShifted * (energyTax - exportLossPerKwh / 3);
+  const networkSaved = kwhShifted * (networkCost - exportLossPerKwh / 3);
+
+  // Simpler and more accurate: total savings = avoided import cost - lost export revenue
+  const totalSaved = avoidedImport * importPriceTotal - reducedExport * exportPrice;
+  const safeTotal = Math.max(0, totalSaved);
+
+  // Proportionally split total across components
+  const ratio = safeTotal > 0 ? safeTotal / (avoidedImport * importPriceTotal || 1) : 0;
+
+  return {
+    savings: {
+      energy: avoidedImport * energyPrice * ratio,
+      energyTax: avoidedImport * energyTax * ratio,
+      networkCost: avoidedImport * networkCost * ratio,
+      total: safeTotal,
+    },
+    importPriceTotal,
+    exportPrice,
+  };
 }
 
 export function calculateFinancials(
@@ -52,44 +80,40 @@ export function calculateFinancials(
   financialConfig: FinancialConfig,
   batteryConfig: BatteryConfig,
 ): FinancialAnalysis {
-  const totalInvestment = batteryConfig.sizeKwh * financialConfig.batteryCostPerKwh;
+  const costPerKwh = getBatteryCostPerKwh(batteryConfig.sizeKwh);
+  const totalInvestment = batteryConfig.sizeKwh * costPerKwh;
   const yearResults: FinancialYearResult[] = [];
   let cumulativeSavings = 0;
   let paybackYears: number | null = null;
 
-  // Saldering ends Jan 1 2027. If toggle is ON, the user currently has saldering.
-  // Year 0 (2026) uses saldering. Years 1+ (2027+) do not.
-  // If toggle is OFF, all years use post-saldering economics.
   const salderingEndsAfterYear = financialConfig.saldering ? 1 : 0;
 
   for (let i = 0; i < batteryYears.length; i++) {
     const priceMultiplier = Math.pow(1 + financialConfig.annualPriceIncrease, i);
-    const importPrice = financialConfig.importPriceEur * priceMultiplier;
-    const exportPrice = financialConfig.exportPriceEur * priceMultiplier;
     const useSaldering = i < salderingEndsAfterYear;
 
-    const annualSavings = calculateYearSavings(
+    const { savings, importPriceTotal, exportPrice } = calculateYearSavings(
       batteryYears[i],
       baselineYears[i],
-      importPrice,
-      exportPrice,
+      financialConfig,
+      priceMultiplier,
       useSaldering,
     );
 
-    cumulativeSavings += annualSavings;
+    cumulativeSavings += savings.total;
 
     if (paybackYears === null && cumulativeSavings >= totalInvestment) {
-      const prevCumulative = cumulativeSavings - annualSavings;
+      const prevCumulative = cumulativeSavings - savings.total;
       const remaining = totalInvestment - prevCumulative;
-      const fractionOfYear = annualSavings > 0 ? remaining / annualSavings : 1;
+      const fractionOfYear = savings.total > 0 ? remaining / savings.total : 1;
       paybackYears = i + fractionOfYear;
     }
 
     yearResults.push({
       year: i,
-      annualSavings,
+      savings,
       cumulativeSavings,
-      importPrice,
+      importPriceTotal,
       exportPrice,
     });
   }
@@ -102,7 +126,7 @@ export function calculateFinancials(
   return {
     yearResults,
     totalSavings: cumulativeSavings,
-    annualSavingsFirstYear: yearResults[0]?.annualSavings ?? 0,
+    annualSavingsFirstYear: yearResults[0]?.savings ?? { energy: 0, energyTax: 0, networkCost: 0, total: 0 },
     paybackYears,
     roi,
     totalInvestment,

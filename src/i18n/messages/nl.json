@@ -1,0 +1,91 @@
+{
+  "common": {
+    "title": "Batterij Calculator",
+    "subtitle": "Bereken de ideale thuisbatterij voor jouw woning",
+    "language": "Taal",
+    "kWh": "kWh",
+    "kWp": "kWp",
+    "kW": "kW",
+    "year": "jaar",
+    "years": "jaar",
+    "euro": "€"
+  },
+  "calculator": {
+    "profile": {
+      "title": "Jouw Energieprofiel",
+      "subtitle": "Hoe ziet jouw dagelijkse energieverbruik eruit?",
+      "working": "Werkend",
+      "home": "Thuiswerk",
+      "family": "Gezin",
+      "custom": "Eigen opgave",
+      "consumption": "Jaarverbruik",
+      "estimated": "Geschat jaarverbruik"
+    },
+    "solar": {
+      "title": "Zonnepanelen",
+      "subtitle": "Jouw zonne-installatie",
+      "panels": "Aantal panelen",
+      "wattage": "Vermogen per paneel",
+      "orientation": "Oriëntatie",
+      "south": "Zuid",
+      "southEastWest": "ZO/ZW",
+      "eastWest": "Oost/West",
+      "north": "Noord",
+      "shading": "Schaduw",
+      "noShading": "Geen schaduw",
+      "heavyShading": "Veel schaduw",
+      "annualYield": "Geschatte jaaropbrengst"
+    },
+    "battery": {
+      "title": "Batterij Vergelijking",
+      "subtitle": "Kies 2-4 batterijgroottes om te vergelijken",
+      "customSize": "Eigen grootte",
+      "minSelection": "Selecteer minimaal 2 batterijgroottes",
+      "maxSelection": "Maximaal 4 batterijgroottes"
+    },
+    "financial": {
+      "title": "Financieel",
+      "subtitle": "Energieprijzen en investeringsgegevens",
+      "importPrice": "Stroomprijs (inkoop)",
+      "exportPrice": "Terugleverprijs",
+      "saldering": "Salderingsregeling",
+      "salderingOn": "Actief (huidige regeling)",
+      "salderingOff": "Inactief (na 2027)",
+      "batteryPrice": "Batterijkosten per kWh",
+      "priceIncrease": "Jaarlijkse prijsstijging",
+      "timeframe": "Analyseperiode"
+    },
+    "results": {
+      "title": "Resultaten",
+      "subtitle": "Vergelijking van batterijgroottes",
+      "recommended": "Aanbevolen",
+      "annualSavings": "Jaarlijkse besparing",
+      "selfConsumption": "Zelfverbruik",
+      "paybackPeriod": "Terugverdientijd",
+      "cyclesPerYear": "Cycli per jaar",
+      "batteryHealth": "Batterijgezondheid",
+      "totalSavings": "Totale besparing",
+      "roi": "Rendement (ROI)",
+      "yearsUnit": "jaar",
+      "noRecommendation": "Geen batterij verdient zich terug binnen de analyseperiode",
+      "recommendationReason": "Beste verhouding tussen terugverdientijd en investering"
+    },
+    "charts": {
+      "energyFlow": "Maandelijks Energieoverzicht",
+      "paybackTimeline": "Terugverdientijd",
+      "dailyProfile": "Dagprofiel",
+      "solarProduction": "Zonne-energie",
+      "consumption": "Verbruik",
+      "batteryCharge": "Batterij laden",
+      "batteryDischarge": "Batterij ontladen",
+      "gridImport": "Netimport",
+      "gridExport": "Netexport",
+      "selfConsumed": "Direct zelfverbruik",
+      "batterySoc": "Batterij SOC",
+      "cumulativeSavings": "Cumulatieve besparing",
+      "batteryCost": "Batterijkosten",
+      "selectMonth": "Selecteer maand",
+      "months": ["Jan", "Feb", "Mrt", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]
+    }
+  }
+}

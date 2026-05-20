@@ -1,0 +1,91 @@
+{
+  "common": {
+    "title": "Battery Calculator",
+    "subtitle": "Calculate the ideal home battery for your situation",
+    "language": "Language",
+    "kWh": "kWh",
+    "kWp": "kWp",
+    "kW": "kW",
+    "year": "year",
+    "years": "years",
+    "euro": "€"
+  },
+  "calculator": {
+    "profile": {
+      "title": "Your Energy Profile",
+      "subtitle": "What does your daily energy consumption look like?",
+      "working": "Working",
+      "home": "Home office",
+      "family": "Family",
+      "custom": "Custom",
+      "consumption": "Annual consumption",
+      "estimated": "Estimated annual consumption"
+    },
+    "solar": {
+      "title": "Solar Panels",
+      "subtitle": "Your solar installation",
+      "panels": "Number of panels",
+      "wattage": "Wattage per panel",
+      "orientation": "Orientation",
+      "south": "South",
+      "southEastWest": "SE/SW",
+      "eastWest": "East/West",
+      "north": "North",
+      "shading": "Shading",
+      "noShading": "No shading",
+      "heavyShading": "Heavy shading",
+      "annualYield": "Estimated annual yield"
+    },
+    "battery": {
+      "title": "Battery Comparison",
+      "subtitle": "Choose 2-4 battery sizes to compare",
+      "customSize": "Custom size",
+      "minSelection": "Select at least 2 battery sizes",
+      "maxSelection": "Maximum 4 battery sizes"
+    },
+    "financial": {
+      "title": "Financial",
+      "subtitle": "Energy prices and investment details",
+      "importPrice": "Electricity price (import)",
+      "exportPrice": "Feed-in tariff",
+      "saldering": "Net metering",
+      "salderingOn": "Active (current regulation)",
+      "salderingOff": "Inactive (post-2027)",
+      "batteryPrice": "Battery cost per kWh",
+      "priceIncrease": "Annual price increase",
+      "timeframe": "Analysis period"
+    },
+    "results": {
+      "title": "Results",
+      "subtitle": "Battery size comparison",
+      "recommended": "Recommended",
+      "annualSavings": "Annual savings",
+      "selfConsumption": "Self-consumption",
+      "paybackPeriod": "Payback period",
+      "cyclesPerYear": "Cycles per year",
+      "batteryHealth": "Battery health",
+      "totalSavings": "Total savings",
+      "roi": "Return (ROI)",
+      "yearsUnit": "years",
+      "noRecommendation": "No battery pays back within the analysis period",
+      "recommendationReason": "Best ratio between payback period and investment"
+    },
+    "charts": {
+      "energyFlow": "Monthly Energy Overview",
+      "paybackTimeline": "Payback Timeline",
+      "dailyProfile": "Daily Profile",
+      "solarProduction": "Solar energy",
+      "consumption": "Consumption",
+      "batteryCharge": "Battery charge",
+      "batteryDischarge": "Battery discharge",
+      "gridImport": "Grid import",
+      "gridExport": "Grid export",
+      "selfConsumed": "Direct self-consumption",
+      "batterySoc": "Battery SOC",
+      "cumulativeSavings": "Cumulative savings",
+      "batteryCost": "Battery cost",
+      "selectMonth": "Select month",
+      "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    }
+  }
+}

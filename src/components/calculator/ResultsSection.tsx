@@ -9,20 +9,26 @@ interface ResultsSectionProps {
   financialConfig: FinancialConfig;
 }
 
-export function ResultsSection({
-  results,
-}: ResultsSectionProps) {
+export function ResultsSection({ results }: ResultsSectionProps) {
   const t = useTranslations("calculator.results");
 
   return (
-    <section className="space-y-5">
-      <div className="flex items-baseline justify-between">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
+    <section className="space-y-6">
+      <div>
+        <span className="inline-block rounded-full bg-brand/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
+          05
+        </span>
+        <h2 className="mt-3 text-xl font-semibold tracking-tight">
           {t("title")}
         </h2>
+        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+          {t("subtitle")}
+        </p>
       </div>
 
-      <ComparisonTable results={results} />
+      <div className="rounded-lg border border-border/50 bg-card p-5">
+        <ComparisonTable results={results} />
+      </div>
     </section>
   );
 }

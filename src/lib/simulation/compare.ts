@@ -9,6 +9,7 @@ import { createDefaultBatteryConfig, getBatteryCostPerKwh, getTotalImportPrice }
 import { simulateMultiYear } from "./engine";
 import { createDegradationFn } from "./degradation";
 import { calculateFinancials } from "./financial";
+import { computeUtilization } from "./sizing";
 
 function simulateBaseline(
   input: SimulationInput,
@@ -75,6 +76,11 @@ export function compareScenarios(
       ? firstYear.totalGridImport / (firstYear.totalConsumption || 1)
       : 1;
 
+    // Battery utilization: how much of the effective capacity is used daily on average
+    const utilization = firstYear
+      ? computeUtilization(firstYear, effectiveSize)
+      : 0;
+
     return {
       batteryConfig,
       yearResults,
@@ -87,6 +93,7 @@ export function compareScenarios(
       finalBatteryHealth: Math.min(1, finalBatteryHealth),
       selfConsumptionRatio: firstYear?.selfConsumptionRatio ?? 0,
       gridDependencyRatio,
+      utilization,
       isRecommended: false,
       totalInvestment: financial.totalInvestment,
     };

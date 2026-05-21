@@ -22,6 +22,7 @@ export interface FormData {
 interface InputSectionProps {
   formData: FormData;
   onFormDataChange: (data: FormData) => void;
+  eveningDemand: number;
 }
 
 function Section({
@@ -37,52 +38,78 @@ function Section({
 }) {
   return (
     <section>
-      <div className="mb-5">
-        <span className="text-[11px] font-medium tracking-widest text-brand uppercase">
+      <div className="mb-6">
+        <span className="inline-block rounded-full bg-brand/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-brand">
           {label}
         </span>
-        <h2 className="mt-1 text-xl font-semibold tracking-tight">{title}</h2>
-        <p className="mt-0.5 text-sm text-muted-foreground">{subtitle}</p>
+        <h2 className="mt-3 text-xl font-semibold tracking-tight">{title}</h2>
+        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+          {subtitle}
+        </p>
       </div>
       {children}
     </section>
   );
 }
 
-export function InputSection({ formData, onFormDataChange }: InputSectionProps) {
+export function InputSection({
+  formData,
+  onFormDataChange,
+  eveningDemand,
+}: InputSectionProps) {
   const tProfile = useTranslations("calculator.profile");
   const tSolar = useTranslations("calculator.solar");
   const tBattery = useTranslations("calculator.battery");
   const tFinancial = useTranslations("calculator.financial");
 
   return (
-    <div className="space-y-14">
-      <Section label="01" title={tProfile("title")} subtitle={tProfile("subtitle")}>
+    <div className="space-y-16">
+      <Section
+        label="01"
+        title={tProfile("title")}
+        subtitle={tProfile("subtitle")}
+      >
         <ProfileSelector
-          value={{ profile: formData.profile, consumption: formData.consumption }}
+          value={{
+            profile: formData.profile,
+            consumption: formData.consumption,
+          }}
           onChange={({ profile, consumption }) =>
             onFormDataChange({ ...formData, profile, consumption })
           }
         />
       </Section>
 
-      <Section label="02" title={tSolar("title")} subtitle={tSolar("subtitle")}>
+      <Section
+        label="02"
+        title={tSolar("title")}
+        subtitle={tSolar("subtitle")}
+      >
         <SolarConfig
           value={formData.solar}
           onChange={(solar) => onFormDataChange({ ...formData, solar })}
         />
       </Section>
 
-      <Section label="03" title={tBattery("title")} subtitle={tBattery("subtitle")}>
+      <Section
+        label="03"
+        title={tBattery("title")}
+        subtitle={tBattery("subtitle")}
+      >
         <BatterySelector
           value={formData.batterySizes}
           onChange={(batterySizes) =>
             onFormDataChange({ ...formData, batterySizes })
           }
+          eveningDemand={eveningDemand}
         />
       </Section>
 
-      <Section label="04" title={tFinancial("title")} subtitle={tFinancial("subtitle")}>
+      <Section
+        label="04"
+        title={tFinancial("title")}
+        subtitle={tFinancial("subtitle")}
+      >
         <FinancialConfig
           value={formData.financial}
           onChange={(financial) =>

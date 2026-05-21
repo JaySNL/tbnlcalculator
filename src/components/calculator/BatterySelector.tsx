@@ -5,17 +5,21 @@ import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { BATTERY_SIZE_OPTIONS } from "@/lib/simulation/constants";
+import { BATTERY_SIZE_OPTIONS, createDefaultBatteryConfig } from "@/lib/simulation/constants";
+import { isOversized } from "@/lib/simulation/sizing";
 
 interface BatterySelectorProps {
   value: number[];
   onChange: (sizes: number[]) => void;
+  eveningDemand?: number;
 }
 
-export function BatterySelector({ value, onChange }: BatterySelectorProps) {
+export function BatterySelector({ value, onChange, eveningDemand }: BatterySelectorProps) {
   const t = useTranslations("calculator.battery");
   const [customInput, setCustomInput] = useState("");
   const [showCustom, setShowCustom] = useState(false);
+
+  const defaultDod = createDefaultBatteryConfig(5).depthOfDischarge;
 
   function toggleSize(size: number) {
     if (value.includes(size)) {
@@ -39,12 +43,31 @@ export function BatterySelector({ value, onChange }: BatterySelectorProps) {
   const tooFew = value.length < 2;
   const atMax = value.length >= 4;
 
+  const oversizedThreshold = eveningDemand
+    ? Math.ceil(eveningDemand * 1.5 / 0.9)
+    : null;
+  const anySelectedOversized = eveningDemand
+    ? value.some((s) => isOversized(s, eveningDemand, defaultDod))
+    : false;
+
   return (
     <div className="space-y-4">
+      {eveningDemand != null && eveningDemand > 0 && (
+        <div className="flex items-baseline justify-between rounded-md bg-muted px-4 py-3">
+          <span className="text-[13px] text-muted-foreground">
+            {t("eveningDemand")}
+          </span>
+          <span className="font-mono text-lg font-medium text-brand">
+            ~{eveningDemand.toFixed(1)} kWh
+          </span>
+        </div>
+      )}
+
       <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
         {BATTERY_SIZE_OPTIONS.map((size) => {
           const isSelected = value.includes(size);
           const disabled = !isSelected && atMax;
+          const sizeIsOversized = eveningDemand != null && eveningDemand > 0 && isOversized(size, eveningDemand, defaultDod);
           return (
             <button
               key={size}
@@ -54,6 +77,7 @@ export function BatterySelector({ value, onChange }: BatterySelectorProps) {
               className={cn(
                 "relative flex flex-col items-center gap-0.5 rounded-md py-3.5 transition-all duration-200 active:scale-[0.98]",
                 disabled && "cursor-not-allowed opacity-25",
+                sizeIsOversized && !isSelected && "opacity-50",
                 isSelected
                   ? "bg-brand text-brand-foreground shadow-sm"
                   : "bg-muted hover:bg-muted/80",
@@ -153,6 +177,12 @@ export function BatterySelector({ value, onChange }: BatterySelectorProps) {
 
       {tooFew && (
         <p className="text-[13px] text-destructive">{t("minSelection")}</p>
+      )}
+
+      {anySelectedOversized && oversizedThreshold && (
+        <p className="text-[13px] text-muted-foreground">
+          {t("oversizedWarning", { size: oversizedThreshold })}
+        </p>
       )}
     </div>
   );

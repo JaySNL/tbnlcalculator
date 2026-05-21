@@ -110,6 +110,7 @@ export interface ComparisonResult {
   finalBatteryHealth: number;
   selfConsumptionRatio: number;
   gridDependencyRatio: number; // netafhankelijkheid
+  utilization: number; // 0-1 ratio: average daily charge / effective capacity
   isRecommended: boolean;
   totalInvestment: number;
 }
